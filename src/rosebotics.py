@@ -41,6 +41,7 @@ class Snatch3rRobot(object):
                  camera_port=ev3.INPUT_2,
                  color_sensor_port=ev3.INPUT_3,
                  infrared_sensor_port=ev3.INPUT_4):
+        print('here')
         # All the methods in this class "delegate" their work to the appropriate
         # subsystem:  drive_system, touch_sensor, camera, olor_sensor, etc.
         self.drive_system = DriveSystem(left_wheel_port, right_wheel_port)
@@ -105,15 +106,18 @@ class DriveSystem(object):
         Go straight at the given speed (-100 to 100, negative is backwards)
         for the given number of inches, stopping with the given StopAction.
         """
+        print('im here')
         self.start_moving(left_wheel_duty_cycle_percent=duty_cycle_percent,
                           right_wheel_duty_cycle_percent=duty_cycle_percent)
-        x = inches * 100
+        x = inches * 80
         while True:
             if self.left_wheel.get_degrees_spun() < x and self.right_wheel.get_degrees_spun() < x:
                 continue
             else:
                 self.stop_moving(stop_action)
                 break
+
+
         # TODO: Do a few experiments to determine the constant that converts
         # TODO:   from wheel-degrees-spun to robot-inches-moved.
         # TODO:   Assume that the conversion is linear with respect to speed.
@@ -196,6 +200,9 @@ class DriveSystem(object):
 
 
 
+
+
+
 # class ArmAndClaw(object):
 #     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
 #         self.motor = ev3.MediumMotor(port)
@@ -232,20 +239,28 @@ class DriveSystem(object):
 
 
 class TouchSensor(low_level_rb.TouchSensor):
-    """ Primary author of this class:  PUT_YOUR_NAME_HERE. """
+    """ Primary author of this class:  Thomas Nandola. """
 
     def __init__(self, port=ev3.INPUT_1):
         super().__init__(port)
 
     def wait_until_pressed(self):
         """ Waits (doing nothing new) until the touch sensor is pressed. """
-        # TODO.
-        # if self.get_value() == 1:
-        #
+        # DONE
+        while True:
+            if self.get_value() == 1:
+                break
+
+
+
+
 
     def wait_until_released(self):
         """ Waits (doing nothing new) until the touch sensor is released. """
-        # TODO
+        # DONE
+        while True:
+            if self.get_value() == 0:
+                break
 
 
 class Camera(object):
