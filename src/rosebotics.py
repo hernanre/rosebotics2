@@ -183,6 +183,9 @@ class DriveSystem(object):
 
 
 
+
+
+
 # class ArmAndClaw(object):
 #     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
 #         self.motor = ev3.MediumMotor(port)
@@ -219,20 +222,28 @@ class DriveSystem(object):
 
 
 class TouchSensor(low_level_rb.TouchSensor):
-    """ Primary author of this class:  PUT_YOUR_NAME_HERE. """
+    """ Primary author of this class:  Thomas Nandola. """
 
     def __init__(self, port=ev3.INPUT_1):
         super().__init__(port)
 
     def wait_until_pressed(self):
         """ Waits (doing nothing new) until the touch sensor is pressed. """
-        # TODO.
-        # if self.get_value() == 1:
-        #
+        # DONE
+        while True:
+            if self.get_value() == 1:
+                break
+
+
+
+
 
     def wait_until_released(self):
         """ Waits (doing nothing new) until the touch sensor is released. """
-        # TODO
+        # DONE
+        while True:
+            if self.get_value() == 0:
+                break
 
 
 class Camera(object):
