@@ -174,13 +174,18 @@ class DriveSystem(object):
             while self.right_wheel.get_degrees_spun() < -degrees:
                 if self.right_wheel.get_degrees_spun() > -degrees:
                     self.right_wheel.stop_spinning(stop_action)
+                    self.right_wheel.reset_degrees_spun()
                     break
         else:
             self.left_wheel.start_spinning(duty_cycle_percent)
             while self.left_wheel.get_degrees_spun() < degrees:
                 if self.left_wheel.get_degrees_spun() > degrees:
                     self.left_wheel.stop_spinning(stop_action)
+                    self.left_wheel.reset_degrees_spun()
                     break
+
+
+
 
 
 
@@ -221,18 +226,28 @@ class DriveSystem(object):
 
 
 class TouchSensor(low_level_rb.TouchSensor):
-    """ Primary author of this class:  PUT_YOUR_NAME_HERE. """
+    """ Primary author of this class:  Thomas Nandola. """
 
     def __init__(self, port=ev3.INPUT_1):
         super().__init__(port)
 
     def wait_until_pressed(self):
         """ Waits (doing nothing new) until the touch sensor is pressed. """
-        # TODO.
+        # DONE
+        while True:
+            if self.get_value() == 1:
+                break
+
+
+
+
 
     def wait_until_released(self):
         """ Waits (doing nothing new) until the touch sensor is released. """
-        # TODO
+        # DONE
+        while True:
+            if self.get_value() == 0:
+                break
 
 
 class Camera(object):
