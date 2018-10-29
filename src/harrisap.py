@@ -9,6 +9,8 @@ import time
 
 def main():
     """ Runs YOUR specific part of the project """
+    robot = rb.DriveSystem()
+    robot.spin_in_place_degrees(90)
 
 
 main()
