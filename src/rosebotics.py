@@ -41,6 +41,7 @@ class Snatch3rRobot(object):
                  camera_port=ev3.INPUT_2,
                  color_sensor_port=ev3.INPUT_3,
                  infrared_sensor_port=ev3.INPUT_4):
+        print('here')
         # All the methods in this class "delegate" their work to the appropriate
         # subsystem:  drive_system, touch_sensor, camera, olor_sensor, etc.
         self.drive_system = DriveSystem(left_wheel_port, right_wheel_port)
@@ -105,15 +106,17 @@ class DriveSystem(object):
         Go straight at the given speed (-100 to 100, negative is backwards)
         for the given number of inches, stopping with the given StopAction.
         """
+        print('im here')
         self.start_moving(left_wheel_duty_cycle_percent=duty_cycle_percent,
                           right_wheel_duty_cycle_percent=duty_cycle_percent)
-        x = inches * 100
+        x = inches * 90
         while True:
             if self.left_wheel.get_degrees_spun() < x and self.right_wheel.get_degrees_spun() < x:
                 continue
             else:
                 self.stop_moving(stop_action)
                 break
+
         # TODO: Do a few experiments to determine the constant that converts
         # TODO:   from wheel-degrees-spun to robot-inches-moved.
         # TODO:   Assume that the conversion is linear with respect to speed.
