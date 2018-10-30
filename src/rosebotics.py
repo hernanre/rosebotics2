@@ -41,7 +41,6 @@ class Snatch3rRobot(object):
                  camera_port=ev3.INPUT_2,
                  color_sensor_port=ev3.INPUT_3,
                  infrared_sensor_port=ev3.INPUT_4):
-        print('here')
         # All the methods in this class "delegate" their work to the appropriate
         # subsystem:  drive_system, touch_sensor, camera, olor_sensor, etc.
         self.drive_system = DriveSystem(left_wheel_port, right_wheel_port)
@@ -250,10 +249,6 @@ class TouchSensor(low_level_rb.TouchSensor):
         while True:
             if self.get_value() == 1:
                 break
-
-
-
-
 
     def wait_until_released(self):
         """ Waits (doing nothing new) until the touch sensor is released. """
