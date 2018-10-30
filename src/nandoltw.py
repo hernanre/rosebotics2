@@ -9,7 +9,7 @@ import time
 
 def main():
     """ Runs YOUR specific part of the project """
-    robot = rb.Snatch3rRobot()
+
     # print("untouched")
     # robot.touch_sensor.wait_until_pressed()
     # print("pressed")
@@ -39,11 +39,15 @@ def main():
     # robot.color_sensor.wait_until_color_is_one_of(colors)
     # print("found color in sequence!")
 
-    while True:
-        robot.drive_system.start_moving()
-        if robot.color_sensor.get_color() == rb.Color.YELLOW.value:
+    def move_until_color(color):
+        robot = rb.Snatch3rRobot()
+
+        while True:
+            robot.drive_system.start_moving()
+            robot.color_sensor.wait_until_color_is(color)
             robot.drive_system.stop_moving()
             break
+    move_until_color(rb.Color.YELLOW.value)
 
 
 
