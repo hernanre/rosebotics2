@@ -197,7 +197,7 @@ class DriveSystem(object):
 
     def drive_polygon(self, n, inches):
         degrees = ((n - 2) * 180) / n
-        print(degrees)
+        degrees = 180 - degrees
         for k in range(n):
             self.go_straight_inches(inches)
             self.spin_in_place_degrees(-degrees)
