@@ -18,21 +18,25 @@ def color(robot):
         break
 
 
-def move_until_color(robot):
-    while True:
-        robot.drive_system.start_moving(50, 50)
-        if robot.color_sensor.get_reflected_intensity() == robot.color_sensor.get_value(rb.Color.BLUE.value):
-            robot.drive_system.stop_moving()
-        break
+def move_until_color(stop_color):
+    robot = rb.Snatch3rRobot()
+    drivesystem = robot.drive_system
+    colorsensor = robot.color_sensor
 
+    while True:
+        drivesystem.start_moving(50, 50)
+        colorsensor.wait_until_color_is(stop_color)
+        drivesystem.stop_moving()
+        break
 
 
 def main():
     """ Runs YOUR specific part of the project """
     robot = rb.Snatch3rRobot()
-    # move_robot(robot)
-    color(robot)
-    move_until_color(robot)
+    move_robot(robot)
+    stop_color = rb.Color.BLUE.value
+    move_until_color(stop_color)
+
 
 
 main()
