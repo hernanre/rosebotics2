@@ -13,7 +13,7 @@ def main():
     # robot.drive_system.go_straight_inches(20)
     # robot.drive_system.drive_polygon(8, 20)
     # line_follow()
-    drive_until_color(rb.Color.GREEN.value)
+    drive_until_color(rb.Color.NO_COLOR.value)
 
 def drive_polygon(n, inches):
     x = rb.Snatch3rRobot()
