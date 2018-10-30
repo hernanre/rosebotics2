@@ -13,7 +13,7 @@ def main():
     # robot.drive_system.go_straight_inches(20)
     # robot.drive_system.drive_polygon(8, 20)
     # line_follow()
-    drive_until_color(rb.Color.GREEN)
+    drive_until_color(rb.Color.GREEN.value)
 
 def drive_polygon(n, inches):
     x = rb.Snatch3rRobot()
@@ -44,6 +44,7 @@ def drive_until_color(color):
     while True:
         drivesystem.start_moving(50,50)
         colorsensor.wait_until_color_is(color)
+        drivesystem.stop_moving()
         break
 
 
