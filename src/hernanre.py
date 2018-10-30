@@ -12,6 +12,7 @@ def move_robot():
     robot = rb.Snatch3rRobot()
     robot.drive_system.go_straight_inches(10, 100)
 
+
 def main():
     """ Runs YOUR specific part of the project """
     print('hello')
