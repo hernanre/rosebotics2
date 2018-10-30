@@ -39,6 +39,8 @@ def main():
     robot.color_sensor.wait_until_color_is_one_of(colors)
     print("found color in sequence!")
 
+    
+
 
 
 
