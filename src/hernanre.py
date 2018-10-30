@@ -6,21 +6,23 @@
 import rosebotics as rb
 import time
 
-robot = rb.Snatch3rRobot()
 
-def move_robot():
+def move_robot(robot):
     robot.drive_system.go_straight_inches(10, 100)
 
 
-def color():
+def color(robot):
     while True:
         x = robot.color_sensor.get_reflected_intensity()
         print(x)
+        break
 
 def main():
     """ Runs YOUR specific part of the project """
-    move_robot()
-    color()
+    robot = rb.Snatch3rRobot()
+    # move_robot(robot)
+    color(robot)
+
 
 main()
 
