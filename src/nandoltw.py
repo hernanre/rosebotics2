@@ -41,7 +41,7 @@ def main():
 
     while True:
         robot.drive_system.start_moving()
-        if robot.color_sensor.get_color() == robot.color_sensor.wait_until_color_is(rb.Color.YELLOW.value):
+        if robot.color_sensor.get_color() == rb.Color.YELLOW.value:
             robot.drive_system.stop_moving()
             break
 
