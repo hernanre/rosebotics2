@@ -9,11 +9,20 @@ import time
 
 def main():
     """ Runs YOUR specific part of the project """
+    red = rb.Color.RED.value
+    blue = rb.Color.BLUE.value
+    green = rb.Color.GREEN.value
+    nocolor = rb.Color.NO_COLOR.value
+    brown = rb.Color.BROWN.value
+    white = rb.Color.WHITE.value
+    yellow = rb.Color.YELLOW.value
+    black = rb.Color.BLACK.value
+
     robot = rb.Snatch3rRobot()
     # robot.drive_system.go_straight_inches(20)
     # robot.drive_system.drive_polygon(8, 20)
     # line_follow()
-    drive_until_color(rb.Color.NO_COLOR.value)
+    drive_until_color(red)
 
 def drive_polygon(n, inches):
     x = rb.Snatch3rRobot()
@@ -35,6 +44,7 @@ def line_follow():
         if colorsensor.get_reflected_intensity() > 10:
             drivesystem.spin_in_place_degrees(-10)
             drivesystem.start_moving(50,50)
+            
 
 def drive_until_color(color):
     robot = rb.Snatch3rRobot()
