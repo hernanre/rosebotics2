@@ -105,7 +105,6 @@ class DriveSystem(object):
         Go straight at the given speed (-100 to 100, negative is backwards)
         for the given number of inches, stopping with the given StopAction.
         """
-        print('im here')
         self.start_moving(left_wheel_duty_cycle_percent=duty_cycle_percent,
                           right_wheel_duty_cycle_percent=duty_cycle_percent)
         x = inches * 80
@@ -314,6 +313,7 @@ class ColorSensor(low_level_rb.ColorSensor):
                 if self.get_color() == colors[k]:
                     return self.get_color()
             break
+
 
 
 class InfraredSensorAsProximitySensor(object):
