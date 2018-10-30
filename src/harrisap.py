@@ -12,7 +12,8 @@ def main():
     robot = rb.Snatch3rRobot()
     # robot.drive_system.go_straight_inches(20)
     # robot.drive_system.drive_polygon(8, 20)
-    line_follow()
+    # line_follow()
+    drive_until_color(rb.Color.GREEN.value)
 
 def drive_polygon(n, inches):
     x = rb.Snatch3rRobot()
@@ -35,6 +36,15 @@ def line_follow():
             drivesystem.spin_in_place_degrees(-10)
             drivesystem.start_moving(50,50)
 
+def drive_until_color(color):
+    robot = rb.Snatch3rRobot()
+    drivesystem = robot.drive_system
+    colorsensor = robot.color_sensor
+
+    while True:
+        drivesystem.start_moving(50,50)
+        colorsensor.wait_until_color_is(color)
+        break
 
 
 
