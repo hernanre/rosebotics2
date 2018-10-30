@@ -195,13 +195,6 @@ class DriveSystem(object):
                     self.left_wheel.stop_spinning(stop_action)
                     break
 
-    def drive_polygon(self, n, inches):
-        degrees = ((n - 2) * 180) / n
-        degrees = 180 - degrees
-        for k in range(n):
-            self.go_straight_inches(inches)
-            self.spin_in_place_degrees(-degrees)
-
 
 
 
@@ -319,6 +312,7 @@ class ColorSensor(low_level_rb.ColorSensor):
             for k in range(len(colors)):
                 if self.get_color() == colors[k]:
                     break
+
 
 
 class InfraredSensorAsProximitySensor(object):
