@@ -48,5 +48,4 @@ def drive_until_color(color):
         break
 
 
-
 main()

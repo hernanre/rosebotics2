@@ -195,12 +195,6 @@ class DriveSystem(object):
                     self.left_wheel.stop_spinning(stop_action)
                     break
 
-
-
-
-
-
-
 # class ArmAndClaw(object):
 #     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
 #         self.motor = ev3.MediumMotor(port)
