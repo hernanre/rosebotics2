@@ -224,7 +224,7 @@ class DriveSystem(object):
             if self.left_wheel.get_degrees_spun() < x and self.right_wheel.get_degrees_spun() < x:
                 continue
             else:
-                self.stop_moving(stop_action)
+                self.stop_moving()
                 break
 
     def spin_in_place_degrees(self,
@@ -745,6 +745,7 @@ class ArmAndClaw(object):
         """
         # TODO: Do this as STEP 2 of implementing this class.
 
+
     def raise_arm_and_close_claw(self):
         """
         Raise the arm (and hence close the claw), by making this ArmAndClaw
@@ -752,6 +753,13 @@ class ArmAndClaw(object):
         Positive speeds make the arm go UP; negative speeds make it go DOWN.
         Stop when the touch sensor is pressed.
         """
+        self.motor.start_spinning(-100)
+        self.touch_sensor.wait_until_pressed()
+
+
+
+
+
         # TODO: Do this as STEP 1 of implementing this class.
 
     def move_arm_to_position(self, position):

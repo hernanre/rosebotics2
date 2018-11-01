@@ -3,7 +3,7 @@
   Fall term, 2018-2019.
 """
 
-import rosebotics as rb
+import rosebotics_new as rb
 import time
 
 
@@ -30,13 +30,18 @@ def move_until_color(stop_color):
         break
 
 
+def moving_arm_and_claw():
+    robot = rb.Snatch3rRobot()
+    robot.arm.raise_arm_and_close_claw()
+
+
 def main():
     """ Runs YOUR specific part of the project """
-    robot = rb.Snatch3rRobot()
-    move_robot(robot)
-    stop_color = rb.Color.BLUE.value
-    move_until_color(stop_color)
-
+    # robot = rb.Snatch3rRobot()
+    # move_robot(robot)
+    # stop_color = rb.Color.BLUE.value
+    # move_until_color(stop_color)
+    moving_arm_and_claw()
 
 
 main()
