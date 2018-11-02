@@ -35,6 +35,7 @@ class Wheel(object):
             self.motor = ev3.MediumMotor(port)
         else:
             self.motor = ev3.LargeMotor(port)
+            print(port)
         assert self.motor.connected,\
             ("A wheel motor appears to not be connected.\n"
              + "  Check the A, B and C jacks.  Are the plugs connected securely?")

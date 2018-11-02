@@ -31,9 +31,18 @@ def move_until_color(stop_color):
 
 
 def moving_arm_and_claw():
-    robot = rb.Snatch3rRobot(100)
-    robot.arm.raise_arm_and_close_claw()
+    robot = rb.Snatch3rRobot()
+    robot.arm.raise_arm_and_close_claw(100)
 
+
+def calibrating():
+    robot = rb.Snatch3rRobot()
+    robot.arm.calibrate(100)
+
+
+def move_to_pose():
+    robot = rb.Snatch3rRobot()
+    robot.arm.move_arm_to_position(3600, 100)
 
 def main():
     """ Runs YOUR specific part of the project """
@@ -41,7 +50,10 @@ def main():
     # move_robot(robot)
     # stop_color = rb.Color.BLUE.value
     # move_until_color(stop_color)
-    moving_arm_and_claw()
+    # moving_arm_and_claw()
+    # calibrating()
+    move_to_pose()
+
 
 
 main()

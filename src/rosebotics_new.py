@@ -744,15 +744,28 @@ class ArmAndClaw(object):
         # Sets the motor's position to 0 (the DOWN position).
         # At the DOWN position, the robot fits in its plastic bin,
         # so we start with the ArmAndClaw in that position.
-        self.calibrate()
+        self.calibrate(speed=80)
 
-    def calibrate(self):
+    def calibrate(self, speed):
         """
         Raise the arm at a reasonable speed until the touch sensor is pressed.
         Then lower the arm 14.2 revolutions (i.e., 14.2 * 360 degrees),
         again at a reasonable speed. Then set the motor's position to 0.
         (Hence, 0 means all the way DOWN and 14.2 * 360 means all the way UP).
         """
+        self.motor.start_spinning(speed)
+        self.touch_sensor.wait_until_pressed()
+        self.motor.stop_spinning()
+
+        self.motor.reset_degrees_spun()
+        self.motor.start_spinning(-speed)
+        while True:
+            self.motor.get_degrees_spun()
+            if abs(self.motor.get_degrees_spun()) >= 14.2 * 360:
+                self.motor.stop_spinning()
+                break
+        self.motor.reset_degrees_spun()
+
         # TODO: Do this as STEP 2 of implementing this class.
 
 
@@ -765,6 +778,7 @@ class ArmAndClaw(object):
         """
         self.motor.start_spinning(speed)
         self.touch_sensor.wait_until_pressed()
+        self.motor.stop_spinning()
 
 
 
@@ -772,9 +786,17 @@ class ArmAndClaw(object):
 
         # TODO: Do this as STEP 1 of implementing this class.
 
-    def move_arm_to_position(self, position):
+    def move_arm_to_position(self, position, speed):
         """
         Spin the arm's motor until it reaches the given position.
         Move at a reasonable speed.
         """
+        print('I got here', position, speed)
+        self.motor.start_spinning(speed)
+        while True:
+            print(self.motor.get_degrees_spun())
+            if abs(self.motor.get_degrees_spun()) >= position:
+                self.motor.stop_spinning()
+                break
+
         # TODO: Do this as STEP 3 of implementing this class.
