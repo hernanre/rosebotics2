@@ -3,8 +3,11 @@
   Fall term, 2018-2019.
 """
 
-import rosebotics as rb
+import rosebotics_new as rb
+import ev3dev.ev3 as ev3
 import time
+import tkinter
+from tkinter import ttk
 
 
 def main():
@@ -20,15 +23,29 @@ def main():
 
     robot = rb.Snatch3rRobot()
     # robot.drive_system.go_straight_inches(20)
-    # robot.drive_system.drive_polygon(8, 20)
+    # drive_polygon(300, 0.65)
     # line_follow()
-    drive_until_color(red)
+    # drive_until_color(red)
+    # robot.drive_system.turn_degrees
+    detectItem()
+
+def detectItem():
+    robot = rb.Snatch3rRobot()
+    sensor = robot.proximity_sensor
+
+    while True:
+        if (70 * ((sensor.get_distance_to_nearest_object())/100)) < 15:
+            ev3.Sound.beep()
+
+
 
 def drive_polygon(n, inches):
     x = rb.Snatch3rRobot()
     drivesystem = x.drive_system
-    degrees = ((n - 2) * 180) / n
-    degrees = 180 - degrees
+    # degrees = ((n - 2) * 180) / n
+    # degrees = 180 - degrees
+    degrees = (360/n)
+
     for k in range(n):
         drivesystem.go_straight_inches(inches)
         drivesystem.spin_in_place_degrees(-degrees)
@@ -38,13 +55,12 @@ def line_follow():
     robot = rb.Snatch3rRobot()
     drivesystem = robot.drive_system
     colorsensor = robot.color_sensor
-
     drivesystem.start_moving()
     while True:
         if colorsensor.get_reflected_intensity() > 10:
-            drivesystem.spin_in_place_degrees(-10)
+            drivesystem.spin_in_place_degrees(10)
             drivesystem.start_moving(50,50)
-            
+
 
 def drive_until_color(color):
     robot = rb.Snatch3rRobot()
@@ -56,6 +72,5 @@ def drive_until_color(color):
         colorsensor.wait_until_color_is(color)
         drivesystem.stop_moving()
         break
-
 
 main()
