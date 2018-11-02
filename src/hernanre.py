@@ -55,6 +55,7 @@ def main():
     move_to_pose()
 
 
-
+robot=rb.Snatch3rRobot()
+robot.proximity_sensor.
 main()
 

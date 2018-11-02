@@ -560,7 +560,7 @@ class InfraredAsProximitySensor(low_level_rb.InfraredSensor):
         is within its field of vision.
         """
         inches_per_cm = 2.54
-        return 70 * inches_per_cm * self.get_distance_to_nearest_object() / 100
+        return (70 / inches_per_cm) * self.get_distance_to_nearest_object() / 100
 
 
 class InfraredAsBeaconSensor(object):
@@ -729,9 +729,9 @@ class ArmAndClaw(object):
     """
     A class for the arm and its associated claw.
     Primary authors:  The ev3dev authors, David Mutchler, Dave Fisher,
-    their colleagues, the entire team, and PUT_YOUR_NAME_HERE.
+    their colleagues, the entire team, and Ricardo Hernandez.
     """
-    # TODO: In the above line, put the name of the primary author of this class.
+    # DONE: In the above line, put the name of the primary author of this class.
 
     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
         # The ArmAndClaw's  motor  is not really a Wheel, of course,
@@ -766,7 +766,7 @@ class ArmAndClaw(object):
                 break
         self.motor.reset_degrees_spun()
 
-        # TODO: Do this as STEP 2 of implementing this class.
+        # DONE: Do this as STEP 2 of implementing this class.
 
 
     def raise_arm_and_close_claw(self, speed):
@@ -784,7 +784,7 @@ class ArmAndClaw(object):
 
 
 
-        # TODO: Do this as STEP 1 of implementing this class.
+        # DONE: Do this as STEP 1 of implementing this class.
 
     def move_arm_to_position(self, position, speed):
         """
@@ -799,4 +799,4 @@ class ArmAndClaw(object):
                 self.motor.stop_spinning()
                 break
 
-        # TODO: Do this as STEP 3 of implementing this class.
+        # DONE: Do this as STEP 3 of implementing this class.
