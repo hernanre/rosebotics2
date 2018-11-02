@@ -3,7 +3,7 @@
   for a variety of applications of the robot.  Augment as appropriate.
 
   Team # PUT_YOUR_TEAM_NUMBER_HERE.
-  Team members:  PUT_YOUR_NAMES_HERE.
+  Team members:  Alex Harris, Thomas Nandola, Ricardo Hernandez.
   Fall term, 2018-2019.
 """
 
@@ -194,12 +194,6 @@ class DriveSystem(object):
                 if self.left_wheel.get_degrees_spun() >= (degrees*5.25):
                     self.left_wheel.stop_spinning(stop_action)
                     break
-
-
-
-
-
-
 
 # class ArmAndClaw(object):
 #     def __init__(self, touch_sensor, port=ev3.OUTPUT_A):
