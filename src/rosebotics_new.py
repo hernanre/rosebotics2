@@ -746,14 +746,14 @@ class ArmAndClaw(object):
         # TODO: Do this as STEP 2 of implementing this class.
 
 
-    def raise_arm_and_close_claw(self):
+    def raise_arm_and_close_claw(self, speed):
         """
         Raise the arm (and hence close the claw), by making this ArmAndClaw
         object's motor start spinning at a reasonable speed (e.g. 100).
         Positive speeds make the arm go UP; negative speeds make it go DOWN.
         Stop when the touch sensor is pressed.
         """
-        self.motor.start_spinning(-100)
+        self.motor.start_spinning(speed)
         self.touch_sensor.wait_until_pressed()
 
 

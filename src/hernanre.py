@@ -31,7 +31,7 @@ def move_until_color(stop_color):
 
 
 def moving_arm_and_claw():
-    robot = rb.Snatch3rRobot()
+    robot = rb.Snatch3rRobot(100)
     robot.arm.raise_arm_and_close_claw()
 
 
