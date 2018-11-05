@@ -51,8 +51,8 @@ def main():
     # stop_color = rb.Color.BLUE.value
     # move_until_color(stop_color)
     # moving_arm_and_claw()
-    # calibrating()
-    move_to_pose()
+    calibrating()
+    # move_to_pose()
 
 
 
