@@ -15,6 +15,7 @@ def main():
 def CameraBeep():
     robot = rb.Snatch3rRobot()
     camera = robot.camera
+    
     while True:
         width = camera.get_biggest_blob().width
         height = camera.get_biggest_blob().height
