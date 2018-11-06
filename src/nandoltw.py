@@ -15,13 +15,9 @@ def main():
 def CameraBeep():
     robot = rb.Snatch3rRobot()
     camera = robot.camera
+    area = robot.camera.get_biggest_blob().get_area()
 
     while True:
-        width = camera.get_biggest_blob().width
-        height = camera.get_biggest_blob().height
-
-        area = width * height
-
         if area > 1000:
             ev3.Sound.beep()
 
