@@ -670,7 +670,6 @@ class InfraredAsBeaconButtonSensor(object):
 
 
 
-
 class BrickButtonSensor(object):
     """
     A class for the buttons on the Brick.

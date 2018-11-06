@@ -15,11 +15,11 @@ def main():
 
 def run_tests():
     """ Runs various tests. """
-    # run_test_ir()
-    run_test_drive_system()
+    run_test_ir()
+    # run_test_drive_system()
     # run_test_touch_sensor()
     # run_test_color_sensor()
-    run_test_arm()
+    # run_test_arm()
 
 
 def run_test_arm():
@@ -43,8 +43,8 @@ def run_test_ir():
         #    color_sensor
         #    camera
         #    proximity_sensor
-        #    beacon_sensor  NOT YET IMPLEMENTED
-        #    beacon_button_sensor  NOT YET IMPLEMENTED
+        #    beacon_sensor
+        #    beacon_button_sensor
         print("Beacon sensor:",
               robot.beacon_button_sensor.is_top_red_button_pressed(),
               robot.beacon_button_sensor.is_bottom_red_button_pressed(),
