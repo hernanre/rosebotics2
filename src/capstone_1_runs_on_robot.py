@@ -7,14 +7,14 @@ Also: responds to Beacon button-presses by beeping, speaking.
 This module runs on the ROBOT.
 It uses MQTT to RECEIVE information from a program running on the LAPTOP.
 
-Authors:  David Mutchler, his colleagues, and PUT_YOUR_NAME_HERE.
+Authors:  David Mutchler, his colleagues, and Alexander Harris.
 """
 # ------------------------------------------------------------------------------
-# TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.  Then delete this TODO.
+# DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
-# TODO: 2. With your instructor, review the "big picture" of laptop-robot
+# DONE: 2. With your instructor, review the "big picture" of laptop-robot
 # TODO:    communication, per the comment in mqtt_sender.py.
 # TODO:    Once you understand the "big picture", delete this TODO.
 # ------------------------------------------------------------------------------
@@ -27,14 +27,18 @@ import ev3dev.ev3 as ev3
 
 def main():
     # --------------------------------------------------------------------------
-    # TODO: 3. Construct a Snatch3rRobot.  Test.  When OK, delete this TODO.
+    # DONE: 3. Construct a Snatch3rRobot.  Test.  When OK, delete this TODO.
     # --------------------------------------------------------------------------
+    robot = rb.Snatch3rRobot()
 
     # --------------------------------------------------------------------------
     # TODO: 4. Add code that constructs a   com.MqttClient   that will
     # TODO:    be used to receive commands sent by the laptop.
     # TODO:    Connect it to this robot.  Test.  When OK, delete this TODO.
     # --------------------------------------------------------------------------
+    rc = RemoteControlETC(robot)
+    mqtt_client = com.MqttClient(rc)
+    mqtt_client.connect_to_pc()
 
     # --------------------------------------------------------------------------
     # TODO: 5. Add a class for your "delegate" object that will handle messages
@@ -57,6 +61,23 @@ def main():
         # TODO:    Beacon is pressed.  Test.  When done, delete this TODO.
         # ----------------------------------------------------------------------
         time.sleep(0.01)  # For the delegate to do its work
+
+class RemoteControlETC(object):
+    """
+    Stores the robot
+        :type robot: rb.Snatch3rRobot
+    """
+    def __init__(self, robot):
+        self.robot = robot
+
+    def go_forward(self, speed_string):
+        try:
+            speed = int(speed_string)
+        except:
+            speed = 100
+        print("robot should start moving")
+        self.robot.drive_system.start_moving(speed,speed)
+
 
 
 main()
