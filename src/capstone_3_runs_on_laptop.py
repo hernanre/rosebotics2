@@ -57,7 +57,7 @@ def main():
     mqtt_client = com.MqttClient()
     mqtt_client.connect_to_ev3()
 
-    setup_gui(root,mqtt_client)
+    setup_gui(root, mqtt_client)
 
     root.mainloop()
     # --------------------------------------------------------------------------
