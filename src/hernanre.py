@@ -52,7 +52,7 @@ def main():
     # move_until_color(stop_color)
     # moving_arm_and_claw()
     calibrating()
-    # move_to_pose()
+    move_to_pose()
 
 
 

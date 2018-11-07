@@ -43,16 +43,16 @@ def run_test_ir():
         #    color_sensor
         #    camera
         #    proximity_sensor
+
         #    beacon_sensor
         #    beacon_button_sensor
         print("Beacon sensor:",
               robot.beacon_button_sensor.is_top_red_button_pressed(),
               robot.beacon_button_sensor.is_bottom_red_button_pressed(),
               robot.beacon_button_sensor.is_top_blue_button_pressed(),
-              robot.beacon_button_sensor.is_bottom_blue_button_pressed())
-        print("Touch sensor:",
-              robot.touch_sensor.get_value(),
-              robot.touch_sensor.is_pressed())
+              robot.beacon_button_sensor.is_bottom_blue_button_pressed(),
+              robot.beacon_button_sensor.get_distance
+
 
         character = input(
             "Press the ENTER (return) key to continue, or q to quit: ")
