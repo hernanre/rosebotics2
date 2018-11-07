@@ -3,21 +3,23 @@
   Fall term, 2018-2019.
 """
 
-import rosebotics_new as rb
+import rosebotics_even_newer as rb
 import ev3dev.ev3 as ev3
 import time
 
 
 def main():
     """ Runs YOUR specific part of the project """
+    CameraBeep()
 
 
 def CameraBeep():
     robot = rb.Snatch3rRobot()
     camera = robot.camera
-    area = robot.camera.get_biggest_blob().get_area()
 
     while True:
+        area = camera.get_biggest_blob().get_area()
+        print(area)
         if area > 1000:
             ev3.Sound.beep()
 

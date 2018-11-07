@@ -25,7 +25,8 @@ def main():
     # line_follow()
     # drive_until_color(red)
     # robot.drive_system.turn_degrees
-    detectItem()
+    # detectItem()
+    ColorSorting(red, blue, green, yellow, green)
 
 def detectItem():
     robot = rb.Snatch3rRobot()
@@ -64,11 +65,63 @@ def drive_until_color(color):
     robot = rb.Snatch3rRobot()
     drivesystem = robot.drive_system
     colorsensor = robot.color_sensor
+    drivesystem.start_moving(5,5)
 
     while True:
-        drivesystem.start_moving(50,50)
         colorsensor.wait_until_color_is(color)
         drivesystem.stop_moving()
         break
+
+
+
+
+# Capstone Project
+
+def ColorSorting(red, white, yellow, black, green):
+    robot = rb.Snatch3rRobot()
+    colorsensor = robot.color_sensor
+    drivesystem = robot.drive_system
+    ev3.Sound.set_volume(100)
+    drivesystem.start_moving(20,20)
+
+    while True:
+        if colorsensor.get_color() == red:
+            ev3.Sound.speak("Hello")
+        if colorsensor.get_color() == white:
+            ev3.Sound.speak("to")
+        if colorsensor.get_color() == yellow:
+            ev3.Sound.speak("the")
+        if colorsensor.get_color() == black:
+            ev3.Sound.speak("world")
+        if colorsensor.get_color() == green:
+            ev3.Sound.speak("Greetings humans")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 main()
