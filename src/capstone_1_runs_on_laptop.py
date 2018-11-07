@@ -53,7 +53,11 @@ import mqtt_remote_method_calls as com
 def main():
     """ Constructs and runs a GUI for this program. """
     root = tkinter.Tk()
-    setup_gui(root)
+
+    mqtt_clinet = com.MqttClient()
+    mqtt_clinet.connect_to_ev3()
+
+    setup_gui(root,mqtt_clinet)
 
     root.mainloop()
     # --------------------------------------------------------------------------
@@ -63,7 +67,7 @@ def main():
     # --------------------------------------------------------------------------
 
 
-def setup_gui(root_window):
+def setup_gui(root_window,mqtt_client):
     """ Constructs and sets up widgets on the given window. """
     frame = ttk.Frame(root_window, padding=10)
     frame.grid()
@@ -75,10 +79,10 @@ def setup_gui(root_window):
     go_forward_button.grid()
 
     go_forward_button['command'] = \
-        lambda: handle_go_forward()
+        lambda: handle_go_forward(speed_entry_box,mqtt_client)
 
 
-def handle_go_forward():
+def handle_go_forward(entrybox,mqtt_client):
     """
     Tells the robot to go forward at the speed specified in the given entry box.
     """
@@ -109,6 +113,16 @@ def handle_go_forward():
     # TODO:
     # TODO:    Test by using a PRINT statement.  When done, delete this TODO.
     # --------------------------------------------------------------------------
+
+    speed = entrybox.get()
+    # try:
+    #     speed = int(speed)
+    # except:
+    #     print("This is not a integer")
+    #     return
+    mqtt_client.send_message('go_forward', [speed])
+    print("sending 'go_forward' to the robot, with a speed", speed)
+
 
 
 main()
