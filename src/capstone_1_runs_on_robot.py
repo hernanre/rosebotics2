@@ -36,7 +36,8 @@ def main():
     # TODO:    be used to receive commands sent by the laptop.
     # TODO:    Connect it to this robot.  Test.  When OK, delete this TODO.
     # --------------------------------------------------------------------------
-    mqtt_client = com.MqttClient()
+    rc = RemoteControlETC(robot)
+    mqtt_client = com.MqttClient(rc)
     mqtt_client.connect_to_pc()
 
     # --------------------------------------------------------------------------
@@ -60,6 +61,23 @@ def main():
         # TODO:    Beacon is pressed.  Test.  When done, delete this TODO.
         # ----------------------------------------------------------------------
         time.sleep(0.01)  # For the delegate to do its work
+
+class RemoteControlETC(object):
+    """
+    Stores the robot
+        :type robot: rb.Snatch3rRobot
+    """
+    def __init__(self, robot):
+        self.robot = robot
+
+    def go_forward(self, speed_string):
+        try:
+            speed = int(speed_string)
+        except:
+            speed = 100
+        print("robot should start moving")
+        self.robot.drive_system.start_moving(speed,speed)
+
 
 
 main()
