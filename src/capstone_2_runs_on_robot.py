@@ -35,6 +35,7 @@ def main():
             ev3.Sound.beep().wait()
         time.sleep(0.01)  # For the delegate to do its work
 
+
 class RemoteControlEtc(object):
     """
     Stores the robot
