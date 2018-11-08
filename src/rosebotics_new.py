@@ -257,14 +257,14 @@ class DriveSystem(object):
 
         if degrees < 0:
             while True:
-                if self.right_wheel.get_degrees_spun() >= (-degrees * 5.25):
+                if self.right_wheel.get_degrees_spun() >= (-degrees * 5.15):
                     # self.right_wheel.stop_spinning(stop_action)
                     # self.left_wheel.stop_spinning(stop_action)
                     self.stop_moving()
                     break
         else:
             while True:
-                if self.left_wheel.get_degrees_spun() >= (degrees * 5.25):
+                if self.left_wheel.get_degrees_spun() >= (degrees * 5.15):
                     # self.right_wheel.stop_spinning(stop_action)
                     # self.left_wheel.stop_spinning(stop_action)
                     self.stop_moving()
