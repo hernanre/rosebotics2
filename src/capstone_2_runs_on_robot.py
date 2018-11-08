@@ -30,20 +30,11 @@ def main():
     mqtt_client = com.MqttClient(rc)
     mqtt_client.connect_to_pc()
 
-
-    # --------------------------------------------------------------------------
-    # TODO: 6. With your instructor, discuss why the following WHILE loop,
-    # TODO:    that appears to do nothing, is necessary.
-    # TODO:    When you understand this, delete this TODO.
-    # --------------------------------------------------------------------------
     while True:
-        # ----------------------------------------------------------------------
-        # TODO: 7. Add code that makes the robot beep if the top-red button
-        # TODO:    on the Beacon is pressed.  Add code that makes the robot
-        # TODO:    speak "Hello. How are you?" if the top-blue button on the
-        # TODO:    Beacon is pressed.  Test.  When done, delete this TODO.
-        # ----------------------------------------------------------------------
+        if robot.beacon_button_sensor.is_top_red_button_pressed():
+            ev3.Sound.beep().wait()
         time.sleep(0.01)  # For the delegate to do its work
+
 
 class RemoteControlEtc(object):
     """
