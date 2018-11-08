@@ -79,6 +79,7 @@ def setup_gui(root_window,mqtt_client):
     spin_right_button = ttk.Button(frame, text="Spin right")
     stop_button = ttk.Button(frame, text="Stop")
     move_inches_button = ttk.Button(frame, text="Move Inches")
+    use_arm_button = ttk.Button(frame, text="Move Arm")
 
     speed_entry_box.grid()
     go_forward_button.grid()
@@ -87,6 +88,7 @@ def setup_gui(root_window,mqtt_client):
     spin_right_button.grid()
     stop_button.grid()
     move_inches_button.grid()
+    use_arm_button.grid()
 
     go_forward_button['command'] = (lambda: handle_go_forward(speed_entry_box,mqtt_client))
     go_backward_button['command'] = (lambda: handle_go_backward(speed_entry_box, mqtt_client))
@@ -94,6 +96,8 @@ def setup_gui(root_window,mqtt_client):
     spin_right_button['command'] = (lambda: handle_spin_right(speed_entry_box, mqtt_client))
     stop_button['command'] = (lambda: stop(mqtt_client))
     move_inches_button['command'] = (lambda: handle_move_inches(speed_entry_box, mqtt_client))
+    use_arm_button['command'] = (lambda: handle_move_arm(speed_entry_box, mqtt_client))
+
 
     # root_window.bind('<Up>', lambda: handle_go_forward(speed_entry_box, mqtt_client))
     # root_window.bind('<Down>', lambda: handle_go_backward(speed_entry_box, mqtt_client))
@@ -168,6 +172,11 @@ def handle_move_inches(entrybox, mttq_client):
     inches = entrybox.get()
     mttq_client.send_message('move_inches', [inches])
     print("sending 'move_inches' to the robot, with inches", inches)
+
+def handle_move_arm(entrybox, mttq_client):
+    position = entrybox.get()
+    mttq_client.send_message('move_arm', [position])
+    print("sending 'move_arm' to the robot, with position", position)
 
 
 

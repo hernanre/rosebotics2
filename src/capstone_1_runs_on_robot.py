@@ -124,4 +124,18 @@ class RemoteControlETC(object):
         self.robot.drive_system.go_straight_inches(inches)
 
 
+    def move_arm(self, position_string):
+        try:
+            position = int(position_string)
+        except:
+            position = 14.2
+
+        if position > 14.2:
+            position = 14.2
+        elif position < 0:
+            position = 0
+
+        self.robot.arm.move_arm_to_position(position, 100)
+
+
 main()

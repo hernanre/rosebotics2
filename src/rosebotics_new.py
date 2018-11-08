@@ -791,7 +791,6 @@ class ArmAndClaw(object):
         Spin the arm's motor until it reaches the given position.
         Move at a reasonable speed.
         """
-        print('I got here', position, speed)
         self.motor.start_spinning(speed)
         while True:
             print(self.motor.get_degrees_spun())
