@@ -215,6 +215,8 @@ class DriveSystem(object):
         # TODO:   Assume that the conversion is linear with respect to speed.
         # TODO: Don't forget that the Wheel object's position begins wherever
         # TODO:   it last was, not necessarily 0.
+        self.right_wheel.reset_degrees_spun()
+        self.left_wheel.reset_degrees_spun()
 
         self.start_moving(left_wheel_duty_cycle_percent=duty_cycle_percent,
                           right_wheel_duty_cycle_percent=duty_cycle_percent)
