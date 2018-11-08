@@ -95,6 +95,12 @@ def setup_gui(root_window,mqtt_client):
     stop_button['command'] = (lambda: stop(mqtt_client))
     move_inches_button['command'] = (lambda: handle_move_inches(speed_entry_box, mqtt_client))
 
+    root_window.bind('<Up>', lambda: handle_go_forward(speed_entry_box, mqtt_client))
+    root_window.bind('<Down>', lambda: handle_go_backward(speed_entry_box, mqtt_client))
+    root_window.bind('<Left>', lambda: handle_spin_left(speed_entry_box, mqtt_client))
+    root_window.bind('<Right>', lambda: handle_spin_right(speed_entry_box, mqtt_client))
+    root_window.bind('<space>', lambda: stop(mqtt_client))
+    root_window.bind('<i>', lambda: handle_move_inches(speed_entry_box, mqtt_client))
 
 
 
