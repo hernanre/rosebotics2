@@ -33,7 +33,7 @@ def detectItem():
     sensor = robot.proximity_sensor
 
     while True:
-        if (70 * ((sensor.get_distance_to_nearest_object())/100)) < 15:
+        if ((70 * ((sensor.get_distance_to_nearest_object())/100)) < 15) and ((70 * ((sensor.get_distance_to_nearest_object())/100)) > 9):
             ev3.Sound.beep()
 
 
