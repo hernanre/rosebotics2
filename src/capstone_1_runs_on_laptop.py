@@ -155,6 +155,11 @@ def stop(mttq_client):
     mttq_client.send_message('stop')
     print("sending 'stop' to the robot, with degrees")
 
+def handle_move_inches(entrybox, mttq_client):
+    inches = entrybox.get()
+    mttq_client.send_message('move_inches', [inches])
+    print("sending 'move_inches' to the robot, with inches", inches)
+
 
 
 

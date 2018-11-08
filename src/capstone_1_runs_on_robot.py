@@ -80,6 +80,7 @@ class RemoteControlETC(object):
         print("robot should start moving")
         self.robot.drive_system.start_moving(speed,speed)
 
+
     def go_backward(self, speed_string):
         try:
             speed = int(speed_string)
@@ -88,6 +89,7 @@ class RemoteControlETC(object):
             speed = -100
 
         self.robot.drive_system.start_moving(speed,speed)
+
 
     def spin_left(self, degree_string):
         try:
@@ -98,6 +100,7 @@ class RemoteControlETC(object):
 
         self.robot.drive_system.spin_in_place_degrees(degrees)
 
+
     def spin_right(self, degree_string):
         try:
             degrees = int(degree_string)
@@ -107,9 +110,18 @@ class RemoteControlETC(object):
 
         self.robot.drive_system.spin_in_place_degrees(degrees)
 
+
     def stop(self):
         self.robot.drive_system.stop_moving()
 
+
+    def move_inches(self, inches_string):
+        try:
+            inches = int(inches_string)
+        except:
+            inches = 10
+
+        self.robot.drive_system.go_straight_inches(inches)
 
 
 main()
