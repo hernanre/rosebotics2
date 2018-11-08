@@ -54,10 +54,10 @@ def main():
     """ Constructs and runs a GUI for this program. """
     root = tkinter.Tk()
 
-    mqtt_clinet = com.MqttClient()
-    mqtt_clinet.connect_to_ev3()
+    mqtt_client = com.MqttClient()
+    mqtt_client.connect_to_ev3()
 
-    setup_gui(root,mqtt_clinet)
+    setup_gui(root,mqtt_client)
 
     root.mainloop()
     # --------------------------------------------------------------------------
@@ -74,12 +74,25 @@ def setup_gui(root_window,mqtt_client):
 
     speed_entry_box = ttk.Entry(frame)
     go_forward_button = ttk.Button(frame, text="Go forward")
+    go_backward_button = ttk.Button(frame, text="Go backward")
+    spin_left_button = ttk.Button(frame, text="Spin left")
+    spin_right_button = ttk.Button(frame, text="Spin right")
+    stop_button = ttk.Button(frame, text="Stop")
 
     speed_entry_box.grid()
     go_forward_button.grid()
+    go_backward_button.grid()
+    spin_left_button.grid()
+    spin_right_button.grid()
+    stop_button.grid()
 
-    go_forward_button['command'] = \
-        lambda: handle_go_forward(speed_entry_box,mqtt_client)
+    go_forward_button['command'] = (lambda: handle_go_forward(speed_entry_box,mqtt_client))
+    go_backward_button['command'] = (lambda: handle_go_backward(speed_entry_box, mqtt_client))
+    spin_left_button['command'] = (lambda: handle_spin_left(speed_entry_box, mqtt_client))
+    spin_right_button['command'] = (lambda: handle_spin_right(speed_entry_box, mqtt_client))
+    stop_button['command'] = (lambda: stop(mqtt_client))
+
+
 
 
 def handle_go_forward(entrybox,mqtt_client):
@@ -122,6 +135,27 @@ def handle_go_forward(entrybox,mqtt_client):
     #     return
     mqtt_client.send_message('go_forward', [speed])
     print("sending 'go_forward' to the robot, with a speed", speed)
+
+def handle_go_backward(entrybox, mttq_client):
+    speed = entrybox.get()
+    mttq_client.send_message('go_backward', [speed])
+    print("sending 'go_backward' to the robot, with a speed", speed)
+
+def handle_spin_left(entrybox, mttq_client):
+    degrees = entrybox.get()
+    mttq_client.send_message('spin_left', [degrees])
+    print("sending 'spin_left' to the robot, with degrees", degrees)
+
+def handle_spin_right(entrybox, mttq_client):
+    degrees = entrybox.get()
+    mttq_client.send_message('spin_right', [degrees])
+    print("sending 'spin_right' to the robot, with degrees", degrees)
+
+def stop(mttq_client):
+    mttq_client.send_message('stop')
+    print("sending 'stop' to the robot, with degrees")
+
+
 
 
 

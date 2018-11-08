@@ -61,6 +61,8 @@ def main():
         # TODO:    Beacon is pressed.  Test.  When done, delete this TODO.
         # ----------------------------------------------------------------------
         time.sleep(0.01)  # For the delegate to do its work
+        if robot.beacon_button_sensor.is_top_red_button_pressed():
+            ev3.Sound.beep().wait()
 
 class RemoteControlETC(object):
     """
@@ -77,6 +79,36 @@ class RemoteControlETC(object):
             speed = 100
         print("robot should start moving")
         self.robot.drive_system.start_moving(speed,speed)
+
+    def go_backward(self, speed_string):
+        try:
+            speed = int(speed_string)
+            speed = -speed
+        except:
+            speed = -100
+
+        self.robot.drive_system.start_moving(speed,speed)
+
+    def spin_left(self, degree_string):
+        try:
+            degrees = int(degree_string)
+            degrees = -degrees
+        except:
+            degrees = -90
+
+        self.robot.drive_system.spin_in_place_degrees(degrees)
+
+    def spin_right(self, degree_string):
+        try:
+            degrees = int(degree_string)
+            degrees = degrees
+        except:
+            degrees = 90
+
+        self.robot.drive_system.spin_in_place_degrees(degrees)
+
+    def stop(self):
+        self.robot.drive_system.stop_moving()
 
 
 
