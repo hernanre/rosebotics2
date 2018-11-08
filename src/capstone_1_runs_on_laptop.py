@@ -78,6 +78,7 @@ def setup_gui(root_window,mqtt_client):
     spin_left_button = ttk.Button(frame, text="Spin left")
     spin_right_button = ttk.Button(frame, text="Spin right")
     stop_button = ttk.Button(frame, text="Stop")
+    move_inches_button = ttk.Button(frame, text="Move Inches")
 
     speed_entry_box.grid()
     go_forward_button.grid()
@@ -85,12 +86,14 @@ def setup_gui(root_window,mqtt_client):
     spin_left_button.grid()
     spin_right_button.grid()
     stop_button.grid()
+    move_inches_button.grid()
 
     go_forward_button['command'] = (lambda: handle_go_forward(speed_entry_box,mqtt_client))
     go_backward_button['command'] = (lambda: handle_go_backward(speed_entry_box, mqtt_client))
     spin_left_button['command'] = (lambda: handle_spin_left(speed_entry_box, mqtt_client))
     spin_right_button['command'] = (lambda: handle_spin_right(speed_entry_box, mqtt_client))
     stop_button['command'] = (lambda: stop(mqtt_client))
+    move_inches_button['command'] = (lambda: handle_move_inches(speed_entry_box, mqtt_client))
 
 
 

@@ -228,7 +228,7 @@ class DriveSystem(object):
 
     def spin_in_place_degrees(self,
                               degrees,
-                              duty_cycle_percent=100,
+                              duty_cycle_percent=50,
                               stop_action=StopAction.BRAKE):
         """
         Makes the robot SPIN IN PLACE for the given number of DEGREES
