@@ -50,29 +50,57 @@ def main():
 
 def setup_gui(root_window, mqtt_client):
     """ Constructs and sets up widgets on the given window. """
-    frame = ttk.Frame(root_window, padding=10)
+    frame = ttk.Frame(root_window, padding=50)
     frame.grid()
 
-    entry_box = ttk.Entry(frame)
-    go_forward_button = ttk.Button(frame, text="Go forward")
+    text = 'Press [W] to go FORWARD\n' \
+           '\n' \
+           'Press [S] to STOP\n' \
+           '\n' \
+           'Press[A] to Turn RIGHT\n' \
+           '\n' \
+           'Press[D] to Turn LEFT\n'
+    label = ttk.Label(frame, text=text)
+    label.grid()
 
-    entry_box.grid()
+
+    speed_entry_box = ttk.Entry(frame)
+    go_forward_button = ttk.Button(frame, text="Go Forward")
+
+    speed_entry_box.grid()
     go_forward_button.grid()
 
-    go_forward_button['command'] = \
-        lambda: handle_go_forward(entry_box, mqtt_client)
+    go_backwards_button = ttk.Button(frame, text="Go Backwards")
+    notice = 'Goes backwards the same speed it goes forward'
+    label = ttk.Label(frame, text=notice)
+    label.grid()
+    go_backwards_button.grid()
 
 
-    turn_left_button = ttk.Button(frame,text = 'Turn Left (degrees)')
-
+    left_box = ttk.Entry(frame)
+    turn_left_button = ttk.Button(frame, text="Turn Left")
+    left_box.grid()
     turn_left_button.grid()
-    turn_left_button['command'] = lambda: handle_turn_left(entry_box, mqtt_client)
 
-    turn_right_button = ttk.Button(frame, text = 'Turn Right(degrees)')
+    right_box = ttk.Entry(frame)
+    turn_right_button = ttk.Button(frame, text="Turn Right")
+    right_box.grid()
     turn_right_button.grid()
-    turn_right_button['command'] = lambda: handle_turn_right(entry_box, mqtt_client)
 
+    stop_button = ttk.Button(frame, text="STOP")
+    stop_button.grid()
 
+    go_forward_button['command'] = lambda: handle_go_forward(speed_entry_box, mqtt_client)
+    go_backwards_button['command'] = lambda: handle_backwards(speed_entry_box, mqtt_client)
+    turn_left_button['command'] = lambda: handle_turn_left(left_box, mqtt_client)
+    turn_right_button['command'] = lambda: handle_turn_right(right_box, mqtt_client)
+    stop_button['command'] = lambda: handle_stop(mqtt_client)
+
+    root_window.bind_all('<Key-w>', lambda event: handle_go_forward(speed_entry_box, mqtt_client))
+    root_window.bind_all('<Key-a>', lambda event: handle_turn_left(left_box, mqtt_client))
+    root_window.bind_all('<Key-d>', lambda event: handle_turn_right(right_box, mqtt_client))
+    root_window.bind_all('<Key-s>', lambda event: handle_stop(mqtt_client))
+    root_window.mainloop()
 
 
 def handle_go_forward(speed_entry_box, mqtt_client):
@@ -84,21 +112,33 @@ def handle_go_forward(speed_entry_box, mqtt_client):
     """
     Tells the robot to go forward at the speed specified in the given entry box.
     """
+def handle_backwards(speed_entry_box, mqtt_client):
+    go_backwards = speed_entry_box.get()
+    print('Going backwards', go_backwards)
+    mqtt_client.send_message('go_backwards', [go_backwards])
 
 
-def handle_turn_left(entry_box, mqtt_client):
 
-    turn_left = entry_box.get()
+def handle_turn_left(left_box, mqtt_client):
+
+    turn_left = left_box.get()
     print('turning left this many degrees:', turn_left)
 
     mqtt_client.send_message('turn_left_degrees', [turn_left])
 
 
-def handle_turn_right(entry_box, mqtt_client):
-    turn_right = entry_box.get()
+def handle_turn_right(right_box, mqtt_client):
+    turn_right = right_box.get()
     print('turning right this many degrees:', turn_right)
 
     mqtt_client.send_message('turn_right_degrees', [turn_right])
+
+
+def handle_stop(mqtt_client):
+    print('Stopping')
+    mqtt_client.send_message('stop')
+
+
 
     # --------------------------------------------------------------------------
     # TODO: 8. Add the single line of code needed to get the string that is

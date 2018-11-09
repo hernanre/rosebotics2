@@ -34,7 +34,8 @@ def main():
         if robot.beacon_button_sensor.is_top_red_button_pressed():
             ev3.Sound.beep().wait()
         time.sleep(0.01)  # For the delegate to do its work
-
+        if robot.beacon_button_sensor.is_top_blue_button_pressed():
+            ev3.Sound.speak('You pressed the blue button')
 
 class RemoteControlEtc(object):
     """
@@ -49,6 +50,10 @@ class RemoteControlEtc(object):
         speed = int(speed_string)
         self.robot.drive_system.start_moving(speed, speed)
 
+    def go_backwards(self, speed_string):
+        speed = -int(speed_string)
+        self.robot.drive_system.start_moving(speed, speed)
+
     def turn_left_degrees(self, turn_left_string):
         degrees = int(turn_left_string)
         self.robot.drive_system.spin_in_place_degrees(-degrees)
@@ -57,5 +62,7 @@ class RemoteControlEtc(object):
         degrees = int(turn_right_string)
         self.robot.drive_system.spin_in_place_degrees(degrees)
 
+    def stop(self):
+        self.robot.drive_system.stop_moving()
 
 main()
