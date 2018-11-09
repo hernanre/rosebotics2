@@ -48,4 +48,14 @@ class RemoteControlEtc(object):
     def go_forward(self, speed_string):
         speed = int(speed_string)
         self.robot.drive_system.start_moving(speed, speed)
+
+    def turn_left_degrees(self, turn_left_string):
+        degrees = int(turn_left_string)
+        self.robot.drive_system.spin_in_place_degrees(-degrees)
+
+    def turn_right_degrees(self, turn_right_string):
+        degrees = int(turn_right_string)
+        self.robot.drive_system.spin_in_place_degrees(degrees)
+
+
 main()

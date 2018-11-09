@@ -46,11 +46,11 @@ def move_to_pose():
 
 def main():
     """ Runs YOUR specific part of the project """
-    # robot = rb.Snatch3rRobot()
-    # move_robot(robot)
-    stop_color = rb.Color.BLUE.value
-    move_until_color(stop_color)
-    # moving_arm_and_claw()
+    robot = rb.Snatch3rRobot()
+    move_robot(robot)
+    # stop_color = rb.Color.BLUE.value
+    # move_until_color(stop_color)
+    moving_arm_and_claw()
     # calibrating()
     # move_to_pose()
 
