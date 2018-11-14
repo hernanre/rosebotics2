@@ -10,7 +10,17 @@ import time
 
 def main():
     """ Runs YOUR specific part of the project """
-    CameraBeep()
+    red = rb.Color.RED.value
+    blue = rb.Color.BLUE.value
+    green = rb.Color.GREEN.value
+    nocolor = rb.Color.NO_COLOR.value
+    brown = rb.Color.BROWN.value
+    white = rb.Color.WHITE.value
+    yellow = rb.Color.YELLOW.value
+    black = rb.Color.BLACK.value
+
+    move_until_color(red)
+
 
 
 def CameraBeep():
@@ -62,7 +72,6 @@ def move_until_color(color):
         robot.color_sensor.wait_until_color_is(color)
         robot.drive_system.stop_moving()
         break
-move_until_color(rb.Color.YELLOW.value)
 
 
 

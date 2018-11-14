@@ -73,6 +73,7 @@ def setup_gui(root_window,mqtt_client):
     frame.grid()
 
     speed_entry_box = ttk.Entry(frame)
+    spin_entry_box = ttk.Entry(frame)
     go_forward_button = ttk.Button(frame, text="Go forward")
     go_backward_button = ttk.Button(frame, text="Go backward")
     spin_left_button = ttk.Button(frame, text="Spin left")
@@ -80,10 +81,15 @@ def setup_gui(root_window,mqtt_client):
     stop_button = ttk.Button(frame, text="Stop")
     move_inches_button = ttk.Button(frame, text="Move Inches")
     use_arm_button = ttk.Button(frame, text="Move Arm")
+    label1 = ttk.Label(text="Speed Value")
+    label2 = ttk.Label(text="Spin Value")
 
+    label1.grid()
     speed_entry_box.grid()
     go_forward_button.grid()
     go_backward_button.grid()
+    label2.grid()
+    spin_entry_box.grid()
     spin_left_button.grid()
     spin_right_button.grid()
     stop_button.grid()
@@ -92,12 +98,16 @@ def setup_gui(root_window,mqtt_client):
 
     go_forward_button['command'] = (lambda: handle_go_forward(speed_entry_box,mqtt_client))
     go_backward_button['command'] = (lambda: handle_go_backward(speed_entry_box, mqtt_client))
-    spin_left_button['command'] = (lambda: handle_spin_left(speed_entry_box, mqtt_client))
-    spin_right_button['command'] = (lambda: handle_spin_right(speed_entry_box, mqtt_client))
+    spin_left_button['command'] = (lambda: handle_spin_left(spin_entry_box, mqtt_client))
+    spin_right_button['command'] = (lambda: handle_spin_right(spin_entry_box, mqtt_client))
     stop_button['command'] = (lambda: stop(mqtt_client))
     move_inches_button['command'] = (lambda: handle_move_inches(speed_entry_box, mqtt_client))
     use_arm_button['command'] = (lambda: handle_move_arm(speed_entry_box, mqtt_client))
 
+    root_window.bind_all('<Key-w>', lambda event: handle_go_forward(speed_entry_box, mqtt_client))
+    root_window.bind_all('<Key-a>', lambda event: handle_spin_left(spin_entry_box, mqtt_client))
+    root_window.bind_all('<Key-d>', lambda event: handle_spin_right(spin_entry_box, mqtt_client))
+    root_window.bind_all('<Key-s>', lambda event: stop(mqtt_client))
 
     # root_window.bind('<Up>', lambda: handle_go_forward(speed_entry_box, mqtt_client))
     # root_window.bind('<Down>', lambda: handle_go_backward(speed_entry_box, mqtt_client))
