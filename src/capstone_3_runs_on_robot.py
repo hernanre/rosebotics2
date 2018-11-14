@@ -61,7 +61,9 @@ def main():
         # TODO:    speak "Hello. How are you?" if the top-blue button on the
         # TODO:    Beacon is pressed.  Test.  When done, delete this TODO.
         # ----------------------------------------------------------------------
-        time.sleep(0.01)  # For the delegate to do its work
+        time.sleep(0.01)  # For the delegate to do its work, let's messages get through.
+        if robot.beacon_button_sensor.is_top_red_button_pressed():
+            ev3.Sound.beep().wait()
 
 class RemoteControlEtc(object):
 
@@ -71,10 +73,31 @@ class RemoteControlEtc(object):
             :type robot: rb.Snatch3rRobot
         """
         self.robot = robot
+    # def go_forward(self,speed_string):
+    #     speed = int(speed_string)
+    #     print('Robot should start moving forwards.')
+    #     self.robot.drive_system.start_moving(speed,speed)
     def go_forward(self,speed_string):
         speed = int(speed_string)
-        print('Robot should start moving.')
+        print("Robot should start moving forward at speed,",speed)
         self.robot.drive_system.start_moving(speed,speed)
+    def stop(self):
+        print("Robot should come to a stop")
+        self.robot.drive_system.stop_moving()
+    def go_backward(self,speed_string):
+        speed = int(speed_string)
+        speed = -speed
+        print('Robot should start moving backwards')
+        self.robot.drive_system.start_moving(speed,speed)
+    def spin_right(self,degree_string):
+        degree = int(degree_string)
+        print('Robot should start turning right')
+        self.robot.drive_system.spin_in_place_degrees(degree)
+    def spin_left(self,degree_string):
+        degree = int(degree_string)
+        degree = -degree
+        print('Robot should start turning left')
+        self.robot.drive_system.spin_in_place_degrees(degree)
 
 
 

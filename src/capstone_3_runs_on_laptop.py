@@ -50,43 +50,141 @@ from tkinter import ttk
 import mqtt_remote_method_calls as com
 
 
+class PenData(object):
+    def __init__(self):
+        self.color = 'blue'
+        self.mouse_pos_x = None
+        self.mouse_pos_y = None
+        self.is_dragging = False
+
+
 def main():
+    pen_data = PenData()
+
     """ Constructs and runs a GUI for this program. """
     root = tkinter.Tk()
 
     mqtt_client = com.MqttClient()
     mqtt_client.connect_to_ev3()
 
-    setup_gui(root, mqtt_client)
+    gui(root, mqtt_client)
+
+
+# --------------------------------------------------------------------------
+# TODO: 5. Add code above that constructs a   com.MqttClient   that will
+# TODO:    be used to send commands to the robot.  Connect it to this pc.
+# TODO:    Test.  When OK, delete this TODO.
+# --------------------------------------------------------------------------
+
+
+# def setup_gui(root_window,mqtt_client):
+#     """ Constructs and sets up widgets on the given window. """
+#     frame = ttk.Frame(root_window, padding=10)
+#     frame.grid()
+#
+#     speed_entry_box = ttk.Entry(frame)
+#     go_forward_button = ttk.Button(frame, text="Go forward")
+#
+#     speed_entry_box.grid()
+#     go_forward_button.grid()
+#
+#     go_forward_button['command'] = lambda: handle_go_forward(speed_entry_box, mqtt_client)
+
+def gui(root, mqtt_client):
+    # Make root, frame and 3 buttons with callbacks.
+
+    main_frame = ttk.Frame(root, padding=5)
+    main_frame.grid()
+    #
+    # w = Scale(main_frame, from_=0, to=100)
+    # w.pack()
+    #
+    # w = Scale(main_frame, from_=0, to=200, orient=HORIZONTAL)
+    # w.pack()
+
+    intro = "Press <w> to go foward\n" \
+            "\n" \
+            + "Press <s> to go backwards\n" \
+              "\n" \
+            + "Press <d> to spin right\n" \
+              "\n" \
+            + "Press <a> to spin left.\n" \
+              " \n" \
+            + "Press <space> to stop\n"
+
+    intro_label = ttk.Label(main_frame, text=intro)
+    intro_label.grid()
+
+    canvas = tkinter.Canvas(main_frame, background='lightgray', width=700, height=400)
+    canvas.grid()
+
+    speed_entry_box = ttk.Entry(main_frame)
+    set_speed_button = ttk.Button(main_frame, text="Set Speed")
+    speed_entry_box.grid()
+    set_speed_button.grid()
+
+    degree_entry_box = ttk.Entry(main_frame)
+    set_degree_button = ttk.Button(main_frame, text="Set Degree")
+    degree_entry_box.grid()
+    set_degree_button.grid()
+
+    scale_entry_box = ttk.Entry(main_frame)
+    set_scale_button = ttk.Button(main_frame, text="Set Scale")
+    scale_entry_box.grid()
+    set_scale_button.grid()
+
+    # n = 0
+    # for buttons in [speed_entry_box, degree_entry_box, scale_entry_box]:
+    #     buttons.grid(row=17, column=n, padx=5)
+    #     n = n + 1
+    #
+    # n = 0
+    # for buttons in [set_speed_button, set_degree_button, set_scale_button]:
+    #     buttons.grid(row=18, column= n, padx=5)
+    #     n = n + 1
+
+    root.bind_all('<Key-w>', lambda event: go_forward(speed_entry_box, mqtt_client))
+    root.bind_all('<Key-s>', lambda event: go_backward(speed_entry_box, mqtt_client))
+    root.bind_all('<Key-d>', lambda event: spin_right(degree_entry_box, mqtt_client))
+    root.bind_all('<Key-a>', lambda event: spin_left(degree_entry_box, mqtt_client))
+    root.bind_all('<Key-space>', lambda event: stop(mqtt_client))
+    root.bind_all('(<KeyRelease>', lambda event: stop(mqtt_client))
 
     root.mainloop()
-    # --------------------------------------------------------------------------
-    # TODO: 5. Add code above that constructs a   com.MqttClient   that will
-    # TODO:    be used to send commands to the robot.  Connect it to this pc.
-    # TODO:    Test.  When OK, delete this TODO.
-    # --------------------------------------------------------------------------
 
 
-def setup_gui(root_window,mqtt_client):
-    """ Constructs and sets up widgets on the given window. """
-    frame = ttk.Frame(root_window, padding=10)
-    frame.grid()
-
-    speed_entry_box = ttk.Entry(frame)
-    go_forward_button = ttk.Button(frame, text="Go forward")
-
-    speed_entry_box.grid()
-    go_forward_button.grid()
-
-    go_forward_button['command'] = \
-        lambda: handle_go_forward(speed_entry_box, mqtt_client
+def go_forward(speed_entry_box, mqtt_client):
+    speed = speed_entry_box.get()
+    print("Sending 'go forward' speed to the robot with speed", speed)
+    mqtt_client.send_message('go_forward', [speed])
 
 
+def go_backward(speed_entry_box, mqtt_client):
+    speed = speed_entry_box.get()
+    print("Sending 'go backward' speed to the robot with speed", speed)
+    mqtt_client.send_message('go_backward', [speed])
 
-def handle_go_forward(entry_box, mqtt_client):
-    speed = entry_box.get()
-    print("Sending 'go forward' to the robot with a speed",speed)
-    mqtt_client.send_message('go forward', [speed])
+
+def spin_right(degree_entry_box, mqtt_client):
+    degree = degree_entry_box.get()
+    print("Sending 'spin_right' degree to the robot with degree", degree)
+    mqtt_client.send_message('spin_right', [degree])
+
+
+def spin_left(degree_entry_box, mqtt_client):
+    degree = degree_entry_box.get()
+    print("Sending 'spin_left' degree to the robot with degree", degree)
+    mqtt_client.send_message('spin_left', [degree])
+
+
+def stop(mqtt_client):
+    print("Sending 'stop' to the robot")
+    mqtt_client.send_message('stop')
+
+    # def handle_go_forward(entry_box, mqtt_client):
+    #     speed = entry_box.get()
+    #     print("Sending 'go forward' to the robot with a speed",speed)
+    #     mqtt_client.send_message('go_forward', [speed])
 
     """
     Tells the robot to go forward at the speed specified in the given entry box.
@@ -104,9 +202,6 @@ def handle_go_forward(entry_box, mqtt_client):
     # TODO:    necessary for that object to make its way to this function.
     # TODO:    When done, delete this TODO.
     # --------------------------------------------------------------------------
-
-
-
 
     # --------------------------------------------------------------------------
     # DONE: 8. Add the single line of code needed to get the string that is
