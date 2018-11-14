@@ -75,7 +75,7 @@ class RemoteControlETC(object):
         self.direction = 0
         self.multiplier = 1
         self.speed = 100
-        self.toggle = 1
+        self.toggle = 0
 
     def speed_setup(self, speed_string):
         try:
@@ -97,7 +97,7 @@ class RemoteControlETC(object):
         try:
             value = int(value)
         except:
-            value = 1
+            value = 0
 
         self.toggle = value
         print(self.toggle)
@@ -168,7 +168,7 @@ class RemoteControlETC(object):
                 print("***Turning Angle (in degrees)***")
                 print(theta)
                 print("********************************")
-                dis = distance/100
+                dis = distance/80
                 i = 0
                 if (x < 0):
                     self.robot.drive_system.spin_in_place_degrees(-theta)
