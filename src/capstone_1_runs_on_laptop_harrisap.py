@@ -58,12 +58,15 @@ def setup_gui(root, pendata, mqtt_client):
     label4.grid_forget()
     spin_box = ttk.Entry(frame)
     spin_box.grid_forget()
+    fix_button = ttk.Button(frame, text = "Driving Button")
+    fix_button.grid_forget()
 
 
     canvas.bind('<Button-1>', lambda event: mouseclick(event, canvas, pendata))
     button['command'] = (lambda: send_information(pendata, multiplier_box, speed_box, mqtt_client))
     resetbutton['command'] = (lambda: reset_coordinates(canvas, pendata))
-    controller_button['command'] = lambda: (switch_controls(canvas, label1, label2, label3, label4, multiplier_box, spin_box, speed_box, button, resetbutton, controller_button, pendata))
+    controller_button['command'] = lambda: (switch_controls(canvas, label1, label2, label3, label4, multiplier_box, spin_box, speed_box, button, fix_button, resetbutton, controller_button, pendata))
+    fix_button['command'] = lambda: (stop(mqtt_client, pendata))
 
     root.bind_all('<Key-w>', lambda event: handle_go_forward(speed_box, mqtt_client, pendata))
     root.bind_all('<Key-s>', lambda event: handle_go_backward(speed_box, mqtt_client, pendata))
@@ -103,7 +106,7 @@ def reset_coordinates(canvas, pendata):
     pendata.mouse_y = None
     pendata.list = []
 
-def switch_controls(canvas, label1, label2, label3, label4, multiplier_box, spin_box, speed_box, button, resetbutton, controller_button, pendata):
+def switch_controls(canvas, label1, label2, label3, label4, multiplier_box, spin_box, speed_box, button, fix_button, resetbutton, controller_button, pendata):
     canvas.grid_forget()
     label1.grid_forget()
     label2.grid_forget()
@@ -115,6 +118,7 @@ def switch_controls(canvas, label1, label2, label3, label4, multiplier_box, spin
     button.grid_forget()
     resetbutton.grid_forget()
     controller_button.grid_forget()
+    fix_button.grid_forget()
 
 
     if pendata.currentsetting == 'gui':
@@ -123,6 +127,7 @@ def switch_controls(canvas, label1, label2, label3, label4, multiplier_box, spin
         label4.grid()
         spin_box.grid()
         controller_button.grid(pady=5)
+        fix_button.grid(pady=10)
         reset_coordinates(canvas, pendata) #Save Previous Drawing or Restart a New One?
         pendata.currentsetting = 'controller'
     elif pendata.currentsetting == 'controller':
