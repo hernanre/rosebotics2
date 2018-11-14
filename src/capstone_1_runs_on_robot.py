@@ -169,7 +169,7 @@ class RemoteControlETC(object):
                         else:
                             break
 
-                        if (70 * ((self.robot.proximity_sensor.get_distance_to_nearest_object())/100)) < 7:
+                        if (70 * ((self.robot.proximity_sensor.get_distance_to_nearest_object())/100)) < 5:
                             self.robot.drive_system.stop_moving()
                             ev3.Sound.speak('There is an object in my path!')
                             return
@@ -183,7 +183,7 @@ class RemoteControlETC(object):
                         else:
                             break
 
-                        if (70 * ((self.robot.proximity_sensor.get_distance_to_nearest_object()) / 100)) < 7:
+                        if (70 * ((self.robot.proximity_sensor.get_distance_to_nearest_object()) / 100)) < 5:
                             self.robot.drive_system.stop_moving()
                             ev3.Sound.speak('There is an object in my path!')
                             return
