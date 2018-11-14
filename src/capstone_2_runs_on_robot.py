@@ -10,12 +10,6 @@ It uses MQTT to RECEIVE information from a program running on the LAPTOP.
 Authors:  David Mutchler, his colleagues, and Ricardo Hernandez.
 """
 
-# ------------------------------------------------------------------------------
-# TODO: 2. With your instructor, review the "big picture" of laptop-robot
-# TODO:    communication, per the comment in mqtt_sender.py.
-# TODO:    Once you understand the "big picture", delete this TODO.
-# ------------------------------------------------------------------------------
-
 import rosebotics_new as rb
 import time
 import mqtt_remote_method_calls as com
