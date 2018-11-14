@@ -800,3 +800,4 @@ class ArmAndClaw(object):
                 break
 
         # DONE: Do this as STEP 3 of implementing this class.
+
