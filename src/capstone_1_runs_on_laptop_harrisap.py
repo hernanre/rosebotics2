@@ -126,7 +126,7 @@ def switch_controls(canvas, label1, label2, label3, label4, multiplier_box, spin
     fix_button.grid_forget()
     checkbox.grid_forget()
 
- 
+
     if pendata.currentsetting == 'gui':
         label3.grid()
         speed_box.grid()
