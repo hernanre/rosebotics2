@@ -73,11 +73,11 @@ def setup_gui(root, pendata, mqtt_client):
     frame = ttk.Frame(root)
     frame.grid()
     label1 = ttk.Label(frame, text = "Draw points and click go!")
-    label1.grid()
+    label1.grid(pady=10)
     canvas = tkinter.Canvas(frame, width = 500, height = 500, background='darkgrey')
-    canvas.grid()
+    canvas.grid(pady=20)
     button = ttk.Button(frame, text = "Go!")
-    button.grid()
+    button.grid(pady=20)
     label2 = ttk.Label(frame, text="Below is multiplier for inches traveling.")
     label2.grid()
     multiplier_box = ttk.Entry(frame, justify = tkinter.CENTER)
@@ -86,9 +86,12 @@ def setup_gui(root, pendata, mqtt_client):
     label3.grid()
     speed_box = ttk.Entry(frame, justify = tkinter.CENTER)
     speed_box.grid()
+    resetbutton = ttk.Button(frame, text="Reset Drawing")
+    resetbutton.grid(pady=30)
 
     canvas.bind('<Button-1>', lambda event: mouseclick(event, canvas, pendata))
     button['command'] = (lambda: send_information(pendata, multiplier_box, speed_box, mqtt_client))
+    resetbutton['command'] = (lambda: reset_coordinates(canvas, pendata))
 
 def mouseclick(event, canvas, pendata):
     canvas.create_oval(event.x - 3, event.y - 3,
@@ -114,6 +117,14 @@ def send_information(pendata, multiplier_box, speed_box, mqtt_client):
     mqtt_client.send_message('multiplier_setup', [multiplier])
     mqtt_client.send_message('speed_setup', [speed])
     mqtt_client.send_message('coordinate_setup', [pendata.list])
+
+def reset_coordinates(canvas, pendata):
+    canvas.delete("all")
+    pendata.fclick = False
+    pendata.mouse_x = None
+    pendata.mouse_y = None
+    pendata.list = []
+
 
 
 
