@@ -19,14 +19,14 @@ def main():
     yellow = rb.Color.YELLOW.value
     black = rb.Color.BLACK.value
 
-    robot = rb.Snatch3rRobot()
+    # robot = rb.Snatch3rRobot()
     # robot.drive_system.go_straight_inches(20)
-    # drive_polygon(300, 0.65)
+    drive_polygon(5, 10)
     # line_follow()
     # drive_until_color(red)
     # robot.drive_system.turn_degrees
-    # detectItem()
-    ColorSorting(red, blue, green, yellow, green)
+    #detectItem()
+    # ColorSorting(red, blue, green, yellow, green)
 
 def detectItem():
     robot = rb.Snatch3rRobot()
@@ -65,7 +65,7 @@ def drive_until_color(color):
     robot = rb.Snatch3rRobot()
     drivesystem = robot.drive_system
     colorsensor = robot.color_sensor
-    drivesystem.start_moving(5,5)
+    drivesystem.start_moving(50,50)
 
     while True:
         colorsensor.wait_until_color_is(color)

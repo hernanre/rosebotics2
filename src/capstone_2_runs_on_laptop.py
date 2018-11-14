@@ -7,29 +7,6 @@ It uses MQTT to SEND information to a program running on the ROBOT.
 
 Authors:  David Mutchler, his colleagues, and Ricardo Hernandez.
 """
-# ------------------------------------------------------------------------------
-# DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.  Then delete this .
-# ------------------------------------------------------------------------------
-
-# ------------------------------------------------------------------------------
-# TODO: 2. With your instructor, discuss the "big picture" of laptop-robot
-# TODO:    communication:
-# TODO:      - One program runs on your LAPTOP.  It displays a GUI.  When the
-# TODO:        user presses a button intended to make something happen on the
-# TODO:        ROBOT, the LAPTOP program sends a message to its MQTT client
-# TODO:        indicating what it wants the ROBOT to do, and the MQTT client
-# TODO:        SENDS that message TO a program running on the ROBOT.
-# TODO:
-# TODO:      - Another program runs on the ROBOT. It stays in a loop, responding
-# TODO:        to events on the ROBOT (like pressing buttons on the IR Beacon).
-# TODO:        It also, in the background, listens for messages TO the ROBOT
-# TODO:        FROM the program running on the LAPTOP.  When it hears such a
-# TODO:        message, it calls the method in the DELAGATE object's class
-# TODO:        that the message indicates, sending arguments per the message.
-# TODO:
-# TODO:  Once you understand the "big picture", delete this TODO (if you wish).
-# ------------------------------------------------------------------------------
-
 
 import tkinter
 from tkinter import ttk
@@ -39,11 +16,19 @@ import mqtt_remote_method_calls as com
 def main():
     """ Constructs and runs a GUI for this program. """
     root = tkinter.Tk()
-
-    mqtt_client = com.MqttClient()
+    rl = RemoteLaptop()
+    mqtt_client = com.MqttClient(rl)
     mqtt_client.connect_to_ev3()
 
     setup_gui(root, mqtt_client)
+
+
+
+
+
+
+
+
 
     root.mainloop()
 
@@ -55,11 +40,14 @@ def setup_gui(root_window, mqtt_client):
 
     text = 'Press [W] to go FORWARD\n' \
            '\n' \
-           'Press [S] to STOP\n' \
+           'Press [S] to go BACKWARDS\n' \
            '\n' \
-           'Press[A] to Turn RIGHT\n' \
+           'Press[D] to Turn RIGHT\n' \
            '\n' \
-           'Press[D] to Turn LEFT\n'
+           'Press[A] to Turn LEFT\n' \
+           '\n' \
+           'Press [SPACE BAR] to STOP MOVING'
+
     label = ttk.Label(frame, text=text)
     label.grid()
 
@@ -90,6 +78,16 @@ def setup_gui(root_window, mqtt_client):
     stop_button = ttk.Button(frame, text="STOP")
     stop_button.grid()
 
+    notice1 = 'Press the button below to remove the focus away from the boxes above.'
+    label = ttk.Label(frame, text=notice1)
+    label.grid()
+
+    key_mode_button = ttk.Button(frame, text='Key Arrow Mode')
+    key_mode_button.grid()
+
+
+
+
     go_forward_button['command'] = lambda: handle_go_forward(speed_entry_box, mqtt_client)
     go_backwards_button['command'] = lambda: handle_backwards(speed_entry_box, mqtt_client)
     turn_left_button['command'] = lambda: handle_turn_left(left_box, mqtt_client)
@@ -97,9 +95,12 @@ def setup_gui(root_window, mqtt_client):
     stop_button['command'] = lambda: handle_stop(mqtt_client)
 
     root_window.bind_all('<Key-w>', lambda event: handle_go_forward(speed_entry_box, mqtt_client))
+    root_window.bind_all('<Key-s>', lambda event: handle_backwards(speed_entry_box, mqtt_client))
     root_window.bind_all('<Key-a>', lambda event: handle_turn_left(left_box, mqtt_client))
     root_window.bind_all('<Key-d>', lambda event: handle_turn_right(right_box, mqtt_client))
-    root_window.bind_all('<Key-s>', lambda event: handle_stop(mqtt_client))
+    root_window.bind_all('<Key-space>', lambda event: handle_stop(mqtt_client))
+    root_window.bind_all('<Key-c>', lambda event: handle_get_color(mqtt_client))
+    root_window.bind_all('<KeyRelease>', lambda event: handle_stop(mqtt_client))
     root_window.mainloop()
 
 
@@ -138,21 +139,49 @@ def handle_stop(mqtt_client):
     print('Stopping')
     mqtt_client.send_message('stop')
 
+def released_key(mqtt_client):
+    print('You released the key you were pressing')
+    mqtt_client.send_message('stop')
+
+def handle_get_color(mqtt_client):
+    print('Getting the color in front of me')
+    mqtt_client.send_message('get_color')
 
 
-    # --------------------------------------------------------------------------
-    # TODO: 8. Add the single line of code needed to get the string that is
-    # TODO:    currently in the entry box.
-    # TODO:
-    # TODO:    Then add the single line of code needed to "call" a method on the
-    # TODO:    LISTENER that runs on the ROBOT, where that LISTENER is the
-    # TODO:    "delegate" object that is constructed when the ROBOT's code
-    # TODO:    runs on the ROBOT.  Send to the delegate the speed to use
-    # TODO:    plus a method name that you will implement in the DELEGATE's
-    # TODO:    class in the module that runs on the ROBOT.
-    # TODO:
-    # TODO:    Test by using a PRINT statement.  When done, delete this TODO.
-    # --------------------------------------------------------------------------
+class RemoteLaptop(object):
+    def __init__(self):
+        print('I got here')
 
+    def robot_orange(self):
+        print("I see orange")
+        window = tkinter.Toplevel()
+        photo = tkinter.PhotoImage(file='orange.gif')
+        label = ttk.Label(window, image= photo)
+        label.image = photo
+        label.grid()
+
+    def robot_yellow(self):
+        print('I see yellow')
+        window = tkinter.Toplevel()
+        photo = tkinter.PhotoImage(file='Yellow.gif')
+        label = ttk.Label(window, image=photo)
+        label.image = photo
+        label.grid()
+
+    def robot_blue(self):
+        print('I see blue')
+        window = tkinter.Toplevel()
+        photo = tkinter.PhotoImage(file='blue.gif')
+        label = ttk.Label(window, image=photo)
+        label.image = photo
+        label.grid()
+
+    def robot_red(self):
+        print('I see red')
+        window = tkinter.Toplevel()
+        photo = tkinter.PhotoImage(file='red.gif')
+        label = ttk.Label(window, image=photo)
+        label.image = photo
+        label.grid()
 
 main()
