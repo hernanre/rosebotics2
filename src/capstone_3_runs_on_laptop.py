@@ -59,7 +59,7 @@ class PenData(object):
 
 
 def main():
-    # pen_data = PenData()
+    pen_data = PenData()
 
     """ Constructs and runs a GUI for this program. """
     root = tkinter.Tk()
