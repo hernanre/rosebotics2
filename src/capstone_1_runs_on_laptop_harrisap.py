@@ -167,6 +167,9 @@ def stop(mttq_client, pendata):
     if pendata.currentsetting == 'controller':
         mttq_client.send_message('stop')
 
+def recieve_message_from_robot(message_string):
+    print("Robot:", message_string)
+
 
 
 
