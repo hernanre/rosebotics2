@@ -31,9 +31,6 @@ def main():
     rc.mr = george
     george.connect_to_pc()
 
-
-
-
     while True:
         if robot.beacon_button_sensor.is_top_red_button_pressed():
             ev3.Sound.beep().wait()
