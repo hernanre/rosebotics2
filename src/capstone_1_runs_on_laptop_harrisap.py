@@ -65,11 +65,11 @@ def setup_gui(root, pendata, mqtt_client):
     resetbutton['command'] = (lambda: reset_coordinates(canvas, pendata))
     controller_button['command'] = lambda: (switch_controls(canvas, label1, label2, label3, label4, multiplier_box, spin_box, speed_box, button, resetbutton, controller_button, pendata))
 
-    root.bind_all('<Key-w', lambda event: handle_go_forward(speed_box, mqtt_client, pendata))
-    root.bind_all('<Key-s', lambda event: handle_go_backward(speed_box, mqtt_client, pendata))
-    root.bind_all('<Key-a', lambda event: handle_spin_left(spin_box, mqtt_client, pendata))
-    root.bind_all('<Key-d', lambda event: handle_spin_right(spin_box, mqtt_client, pendata))
-    root.bind_all('<Key-space', lambda event: stop(mqtt_client, pendata))
+    root.bind_all('<Key-w>', lambda event: handle_go_forward(speed_box, mqtt_client, pendata))
+    root.bind_all('<Key-s>', lambda event: handle_go_backward(speed_box, mqtt_client, pendata))
+    root.bind_all('<Key-a>', lambda event: handle_spin_left(spin_box, mqtt_client, pendata))
+    root.bind_all('<Key-d>', lambda event: handle_spin_right(spin_box, mqtt_client, pendata))
+    root.bind_all('<Key-space>', lambda event: stop(mqtt_client, pendata))
 
 def mouseclick(event, canvas, pendata):
     canvas.create_oval(event.x - 3, event.y - 3,
