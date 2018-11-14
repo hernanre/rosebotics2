@@ -23,6 +23,7 @@ import rosebotics_new as rb
 import time
 import mqtt_remote_method_calls as com
 import ev3dev.ev3 as ev3
+import math
 
 
 def main():
@@ -71,6 +72,100 @@ class RemoteControlETC(object):
     """
     def __init__(self, robot):
         self.robot = robot
+        self.direction = 0
+        self.multiplier = 1
+        self.speed = 100
+
+    def speed_setup(self, speed_string):
+        try:
+            speed = int(speed_string)
+        except:
+            speed = 100
+
+        self.speed = speed
+
+    def multiplier_setup(self, multiplier_string):
+        try:
+            multiplier = int(multiplier_string)
+        except:
+            multiplier = 1
+
+        self.multiplier = multiplier
+
+
+
+    def coordinate_setup(self, coordinate_list):
+        print("*****")
+        print(coordinate_list)
+        print("*****")
+
+        list = []
+        for k in range(0, len(coordinate_list)-1, 2):
+            pointlist = []
+            pointlist = pointlist + [coordinate_list[k]]
+            pointlist = pointlist + [coordinate_list[k+1]]
+            list = list + [pointlist]
+
+        print("***Finished List***")
+        print(list)
+        print("***Finished List***")
+
+        self.drive_start(list)
+
+    def drive_start(self, list):
+        if len(list) < 2:
+            print(list)
+            print("error")
+            return
+
+        for k in range(len(list)-1):
+            xpos = list[k][0]
+            ypos = list[k][1]
+            xfpos = list[k+1][0]
+            yfpos = list[k+1][1]
+            x = xfpos - xpos
+            y = yfpos - ypos
+            if (x == 0) or (y == 0):
+                if (x == 0):
+                    self.robot.drive_system.go_straight_inches(((y/111)*self.multiplier), self.speed)
+                else:
+                    if (x < 0):
+                        self.robot.drive_system.spin_in_place_degrees(-90)
+                        self.robot.drive_system.go_straight_inches(((x/111)*self.multiplier), self.speed)
+                        self.robot.drive_system.spin_in_place_degrees(90)
+                    else:
+                        self.robot.drive_system.spin_in_place_degrees(90)
+                        self.robot.drive_system.go_straight_inches(((x/111)*self.multiplier), self.speed)
+                        self.robot.drive_system.spin_in_place_degrees(-90)
+            else:
+                print("X move and Y move")
+                print("X:", x)
+                print("Y:", y)
+                print("*****************")
+                distance = math.sqrt(((x**2)+(y**2)))
+                distance = ((distance/111) * self.multiplier)
+                print("***Distance Traveling (in inches)***")
+                print(distance)
+                print("************************************")
+                if (yfpos < ypos):
+                    theta = math.atan(((abs(y)) / (abs(x))))
+                    theta = ((theta * 180) / math.pi)
+                    theta = 90 - theta
+                else:
+                    theta = math.atan(((abs(x)) / (abs(y))))
+                    theta = ((theta * 180) / math.pi)
+                    theta = 180 - theta
+                print("***Turning Angle (in degrees)***")
+                print(theta)
+                print("********************************")
+                if (x < 0):
+                    self.robot.drive_system.spin_in_place_degrees(-theta)
+                    self.robot.drive_system.go_straight_inches(distance,self.speed)
+                    self.robot.drive_system.spin_in_place_degrees(theta)
+                else:
+                    self.robot.drive_system.spin_in_place_degrees(theta)
+                    self.robot.drive_system.go_straight_inches(distance,self.speed)
+                    self.robot.drive_system.spin_in_place_degrees(-theta)
 
     def go_forward(self, speed_string):
         try:
@@ -123,18 +218,18 @@ class RemoteControlETC(object):
         self.robot.drive_system.go_straight_inches(inches)
 
 
-    def move_arm(self, position_string):
-        try:
-            position = int(position_string)
-        except:
-            position = 14.2
-
-        if position > 14.2:
-            position = 14.2
-        elif position < 0:
-            position = 0
-
-        self.robot.arm.move_arm_to_position(position, 100)
+    # def move_arm(self, position_string):
+    #     try:
+    #         position = int(position_string)
+    #     except:
+    #         position = 14.2
+    #
+    #     if position > 14.2:
+    #         position = 14.2
+    #     elif position < 0:
+    #         position = 0
+    #
+    #     self.robot.arm.move_arm_to_position(position, 100)
 
 
 main()

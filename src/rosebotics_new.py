@@ -220,6 +220,7 @@ class DriveSystem(object):
 
         self.start_moving(left_wheel_duty_cycle_percent=duty_cycle_percent,
                           right_wheel_duty_cycle_percent=duty_cycle_percent)
+
         x = inches * 80
         while True:
             if self.left_wheel.get_degrees_spun() < x and self.right_wheel.get_degrees_spun() < x:
@@ -227,6 +228,7 @@ class DriveSystem(object):
             else:
                 self.stop_moving()
                 break
+
 
     def spin_in_place_degrees(self,
                               degrees,

@@ -99,7 +99,7 @@ def setup_gui(root_window, mqtt_client):
     root_window.bind_all('<Key-w>', lambda event: handle_go_forward(speed_entry_box, mqtt_client))
     root_window.bind_all('<Key-a>', lambda event: handle_turn_left(left_box, mqtt_client))
     root_window.bind_all('<Key-d>', lambda event: handle_turn_right(right_box, mqtt_client))
-    root_window.bind_all('<Key-s>', lambda event: handle_stop(mqtt_client))
+    root_window.bind_all('<Key-space>', lambda event: handle_stop(mqtt_client))
     root_window.mainloop()
 
 
