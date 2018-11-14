@@ -77,7 +77,6 @@ class RemoteControlETC(object):
             speed = int(speed_string)
         except:
             speed = 100
-        print("robot should start moving")
         self.robot.drive_system.start_moving(speed,speed)
 
 
