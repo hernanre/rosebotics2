@@ -27,8 +27,12 @@ def main():
     robot = rb.Snatch3rRobot()
 
     rc = RemoteControlEtc(robot)
-    mqtt_client = com.MqttClient(rc)
-    mqtt_client.connect_to_pc()
+    george = com.MqttClient(rc)
+    rc.mr = george
+    george.connect_to_pc()
+
+
+
 
     while True:
         if robot.beacon_button_sensor.is_top_red_button_pressed():
@@ -45,7 +49,7 @@ class RemoteControlEtc(object):
 
     def __init__(self, robot):
         self.robot = robot
-
+        self.mr = None
     def go_forward(self, speed_string):
         speed = int(speed_string)
         self.robot.drive_system.start_moving(speed, speed)
@@ -64,5 +68,25 @@ class RemoteControlEtc(object):
 
     def stop(self):
         self.robot.drive_system.stop_moving()
+
+    def get_color(self):
+        self.robot.camera.set_signature('SIG1')
+        red = self.robot.camera.get_biggest_blob()
+        self.robot.camera.set_signature('SIG2')
+        orange = self.robot.camera.get_biggest_blob()
+        self.robot.camera.set_signature('SIG3')
+        yellow = self.robot.camera.get_biggest_blob()
+        self.robot.camera.set_signature('SIG5')
+        blue = self.robot.camera.get_biggest_blob()
+
+
+        if red.get_area() > 1000:
+            self.mr.send_message("robot_red")
+        if orange.get_area() > 1000:
+            self.mr.send_message("robot_orange")
+        if yellow.get_area() > 1000:
+            self.mr.send_message("robot_yellow")
+        if blue.get_area() > 1000:
+            self.mr.send_message("robot_blue")
 
 main()
