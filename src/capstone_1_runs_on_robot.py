@@ -171,12 +171,7 @@ class RemoteControlETC(object):
 
                         if (70 * ((self.robot.proximity_sensor.get_distance_to_nearest_object())/100)) < 10:
                             self.robot.drive_system.stop_moving()
-                            print("There is an object in my path!")
-                            return
-
-                        if (self.robot.color_sensor.get_color() == rb.Color.NO_COLOR):
-                            self.robot.drive_system.stop_moving()
-                            print("There is no more ground!")
+                            print("there is an object in my path!")
                             return
                     self.robot.drive_system.spin_in_place_degrees(theta)
                 else:
@@ -191,11 +186,6 @@ class RemoteControlETC(object):
                         if (70 * ((self.robot.proximity_sensor.get_distance_to_nearest_object()) / 100)) < 10:
                             self.robot.drive_system.stop_moving()
                             print("There is an object in my path!")
-                            return
-
-                        if (self.robot.color_sensor.get_color() == rb.Color.NO_COLOR):
-                            self.robot.drive_system.stop_moving()
-                            print("There is no more ground!")
                             return
                     self.robot.drive_system.spin_in_place_degrees(-theta)
 
