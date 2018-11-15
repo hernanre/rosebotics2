@@ -55,7 +55,8 @@ class PenData(object):
         self.color = 'blue'
         self.mouse_pos_x = None
         self.mouse_pos_y = None
-        self.is_dragging = False
+        self.firstclick = False
+        self.datalist = []
 
 
 def main():
@@ -67,7 +68,7 @@ def main():
     mqtt_client = com.MqttClient()
     mqtt_client.connect_to_ev3()
 
-    gui(root, mqtt_client)
+    gui(root, mqtt_client,pen_data)
 
 
 # --------------------------------------------------------------------------
@@ -90,17 +91,12 @@ def main():
 #
 #     go_forward_button['command'] = lambda: handle_go_forward(speed_entry_box, mqtt_client)
 
-def gui(root, mqtt_client):
+def gui(root, mqtt_client,pen_data):
     # Make root, frame and 3 buttons with callbacks.
 
     main_frame = ttk.Frame(root, padding=5)
     main_frame.grid()
-    #
-    # w = Scale(main_frame, from_=0, to=100)
-    # w.pack()
-    #
-    # w = Scale(main_frame, from_=0, to=200, orient=HORIZONTAL)
-    # w.pack()
+
 
     intro = "Press <w> to go foward\n" \
             "\n" \
@@ -118,6 +114,8 @@ def gui(root, mqtt_client):
     canvas = tkinter.Canvas(main_frame, background='lightgray', width=700, height=400)
     canvas.grid()
 
+    canvas.bind('<Button-1>', lambda event: create_line(event,canvas,pen_data,mqtt_client))
+
     speed_entry_box = ttk.Entry(main_frame)
     set_speed_button = ttk.Button(main_frame, text="Set Speed")
     speed_entry_box.grid()
@@ -133,15 +131,15 @@ def gui(root, mqtt_client):
     scale_entry_box.grid()
     set_scale_button.grid()
 
-    # n = 0
-    # for buttons in [speed_entry_box, degree_entry_box, scale_entry_box]:
-    #     buttons.grid(row=17, column=n, padx=5)
-    #     n = n + 1
-    #
-    # n = 0
-    # for buttons in [set_speed_button, set_degree_button, set_scale_button]:
-    #     buttons.grid(row=18, column= n, padx=5)
-    #     n = n + 1
+    clear_button = ttk.Button(main_frame, text="Clear")
+    clear_button.grid()
+
+    clear_button['command'] = lambda: clear_data(canvas,pen_data)
+
+    drive_button = ttk.Button(main_frame, text="Drive!")
+    drive_button.grid()
+
+    drive_button['command'] = lambda: drive_info(speed_entry_box,scale_entry_box,pen_data,mqtt_client)
 
     root.bind_all('<Key-w>', lambda event: go_forward(speed_entry_box, mqtt_client))
     root.bind_all('<Key-s>', lambda event: go_backward(speed_entry_box, mqtt_client))
@@ -152,6 +150,8 @@ def gui(root, mqtt_client):
 
     root.mainloop()
 
+
+# keybind drive methods
 
 def go_forward(speed_entry_box, mqtt_client):
     speed = speed_entry_box.get()
@@ -181,10 +181,61 @@ def stop(mqtt_client):
     print("Sending 'stop' to the robot")
     mqtt_client.send_message('stop')
 
-    # def handle_go_forward(entry_box, mqtt_client):
-    #     speed = entry_box.get()
-    #     print("Sending 'go forward' to the robot with a speed",speed)
-    #     mqtt_client.send_message('go_forward', [speed])
+# canvas drawing methods
+
+
+def create_line(event,canvas,data,mqtt_client):
+    if data.firstclick == False:
+        data.mouse_pos_x = event.x
+        data.mouse_pos_y = event.y
+        data.firstclick = True
+        canvas.create_oval(event.x - 3, event.y - 3,
+                           event.x + 3, event.y + 3,
+                           outline='blue',fill='blue', width=3)
+    else:
+        canvas.create_line(data.mouse_pos_x, data.mouse_pos_y, event.x, event.y,fill=data.color,width=3)
+        canvas.create_oval(event.x - 3, event.y - 3,
+                           event.x + 3, event.y + 3,
+                           outline='blue',fill='blue', width=3)
+        data.mouse_pos_x = event.x
+        data.mouse_pos_y = event.y
+
+    data.datalist.append(data.mouse_pos_x)
+    data.datalist.append(data.mouse_pos_y)
+
+    if len(data.datalist) > 1:
+        x_list = []
+        y_list = []
+        for k in range(0,len(data.datalist),2):
+            x_list = x_list + [data.datalist[k]]
+        for k in range(1,len(data.datalist),2):
+            y_list = y_list + [data.datalist[k]]
+
+
+        print("-------DATALIST---------")
+        print(data.datalist)
+        print("--------X_POINTS--------")
+        print(x_list)
+        print("--------Y_POINTS--------")
+        print(y_list)
+def clear_data(canvas,pen_data):
+    canvas.delete("all")
+    pen_data.datalist = []
+    pen_data.mouse_pos_x = None
+    pen_data.mouse_pos_y = None
+    pen_data.firstclick = False
+
+
+def drive_info(speed_entry_box,scale_entry_box,pen_data,mqtt_client):
+    speed = speed_entry_box.get()
+    scale = scale_entry_box.get()
+    print(pen_data.datalist)
+    mqtt_client.send_message('sequence_of_points',[speed,scale,pen_data.datalist])
+    print("Message Sent!")
+
+
+def received(message):
+    print(message)
 
     """
     Tells the robot to go forward at the speed specified in the given entry box.
@@ -208,7 +259,7 @@ def stop(mqtt_client):
     # TODO:    currently in the entry box.
     # TODO:
     # TODO:    Then add the single line of code needed to "call" a method on the
-    # TODO:    LISTENER that runs on the ROBOT, where that LISTENER is the
+    # TODO:    LISTENER runs on the ROBOT, where that LISTENER is the
     # TODO:    "delegate" object that is constructed when the ROBOT's code
     # TODO:    runs on the ROBOT.  Send to the delegate the speed to use
     # TODO:    plus a method name that you will implement in the DELEGATE's

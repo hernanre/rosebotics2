@@ -23,6 +23,7 @@ import rosebotics_new as rb
 import time
 import mqtt_remote_method_calls as com
 import ev3dev.ev3 as ev3
+import math
 
 
 def main():
@@ -65,6 +66,7 @@ def main():
         if robot.beacon_button_sensor.is_top_red_button_pressed():
             ev3.Sound.beep().wait()
 
+
 class RemoteControlEtc(object):
 
     def __init__(self,robot):
@@ -99,8 +101,82 @@ class RemoteControlEtc(object):
         print('Robot should start turning left')
         self.robot.drive_system.spin_in_place_degrees(degree)
 
+#Robot Follow-Line Drive System
 
+    def sequence_of_points(self,speed_string,scale_string,datalist):
+        sq = []
+        for k in range(0, len(datalist), 2):
+            interior = []
+            interior = interior + [datalist[k]]
+            interior = interior + [datalist[k+1]]
+            sq = sq + [interior]
 
+        print(sq)
+
+        self.drive_line(speed_string,scale_string,sq)
+
+    def drive_line(self,speed_string,scale_string,sq):
+
+        speed = int(speed_string)
+        scale = int(scale_string)
+
+        for k in range(len(sq) - 1):
+
+            xi = sq[k][0]
+            xf = sq[k + 1][0]
+
+            yi = sq[k][1]
+            yf = sq[k + 1][1]
+
+            x_distance = (xf - xi)
+            y_distance = (yf - yi)
+
+            distance = math.sqrt(((x_distance) ** 2) + ((y_distance) ** 2))
+            distance = (distance / 111) * scale
+            print("Distance:")
+            print(distance)
+
+            if (yf < yi):
+                angle = math.atan(((abs(y_distance)) / (abs(x_distance))))
+                angle = ((angle * 180) / math.pi)
+                angle = 90 - angle
+            else:
+                angle = math.atan(((abs(x_distance)) / (abs(y_distance))))
+                angle = ((angle * 180) / math.pi)
+                angle = 180 - angle
+            md = distance/80
+            md2 = 0
+            if (x_distance < 0):
+                self.robot.drive_system.spin_in_place_degrees(-angle)
+                while True:
+                    if md2 < distance:
+                        self.robot.drive_system.go_straight_inches(md, speed)
+                        md2 = md2 + md
+                    else:
+                        break
+
+                    if ((70 * ((self.robot.proximity_sensor.get_distance_to_nearest_object())/100)) < 10):
+                        self.robot.drive_system.stop_moving()
+                        ev3.Sound.speak("Please Re Route!")
+                        print("Re-Route")
+                        return
+
+                self.robot.drive_system.spin_in_place_degrees(angle)
+            else:
+                self.robot.drive_system.spin_in_place_degrees(angle)
+                while True:
+                    if md2 < distance:
+                        self.robot.drive_system.go_straight_inches(md, speed)
+                        md2 = md2 + md
+                    else:
+                        break
+
+                    if ((70 * ((self.robot.proximity_sensor.get_distance_to_nearest_object()) / 100)) < 10):
+                        self.robot.drive_system.stop_moving()
+                        ev3.Sound.speak("Please Re Route!")
+                        print("Re-Route")
+                        return
+                self.robot.drive_system.spin_in_place_degrees(-angle)
 
 
 
