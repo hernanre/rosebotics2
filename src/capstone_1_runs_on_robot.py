@@ -75,6 +75,7 @@ class RemoteControlETC(object):
         self.direction = 0
         self.multiplier = 1
         self.speed = 100
+        self.toggle = 0
 
     def speed_setup(self, speed_string):
         try:
@@ -91,6 +92,15 @@ class RemoteControlETC(object):
             multiplier = 1
 
         self.multiplier = multiplier
+
+    def change_value(self, value):
+        try:
+            value = int(value)
+        except:
+            value = 0
+
+        self.toggle = value
+        print(self.toggle)
 
 
 
@@ -158,35 +168,41 @@ class RemoteControlETC(object):
                 print("***Turning Angle (in degrees)***")
                 print(theta)
                 print("********************************")
-                dis = distance/20
+                dis = distance/80
                 i = 0
                 if (x < 0):
                     self.robot.drive_system.spin_in_place_degrees(-theta)
-                    while True:
-                        if i < distance:
-                            self.robot.drive_system.go_straight_inches(dis,self.speed)
-                            i = i + dis
-                        else:
-                            break
+                    if self.toggle == 1:
+                        while True:
+                            if i < distance:
+                                self.robot.drive_system.go_straight_inches(dis,self.speed)
+                                i = i + dis
+                            else:
+                                break
 
-                        if (70 * ((self.robot.proximity_sensor.get_distance_to_nearest_object())/100)) < 10:
-                            self.robot.drive_system.stop_moving()
-                            print("there is an object in my path!")
-                            return
+                            if (70 * ((self.robot.proximity_sensor.get_distance_to_nearest_object())/100)) < 10:
+                                self.robot.drive_system.stop_moving()
+                                ev3.Sound.speak('There is an object in my path!')
+                                return
+                    else:
+                        self.robot.drive_system.go_straight_inches(distance, self.speed)
                     self.robot.drive_system.spin_in_place_degrees(theta)
                 else:
                     self.robot.drive_system.spin_in_place_degrees(theta)
-                    while True:
-                        if i < distance:
-                            self.robot.drive_system.go_straight_inches(dis, self.speed)
-                            i = i + dis
-                        else:
-                            break
+                    if self.toggle == 1:
+                        while True:
+                            if i < distance:
+                                self.robot.drive_system.go_straight_inches(dis, self.speed)
+                                i = i + dis
+                            else:
+                                break
 
-                        if (70 * ((self.robot.proximity_sensor.get_distance_to_nearest_object()) / 100)) < 10:
-                            self.robot.drive_system.stop_moving()
-                            print("There is an object in my path!")
-                            return
+                            if (70 * ((self.robot.proximity_sensor.get_distance_to_nearest_object()) / 100)) < 10:
+                                self.robot.drive_system.stop_moving()
+                                ev3.Sound.speak('There is an object in my path!')
+                                return
+                    else:
+                        self.robot.drive_system.go_straight_inches(distance, self.speed)
                     self.robot.drive_system.spin_in_place_degrees(-theta)
 
 
